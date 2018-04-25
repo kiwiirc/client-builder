@@ -30,7 +30,7 @@ export default {
         field = this.fields[i]
         out[field.name] = field.value
       }
-      this.$emit('update', { source: 'MessageView', data: { WelcomeScreen: out } })
+      this.$emit('update', { source: 'MessageView', data: out })
     }
   },
   beforeMount () {
