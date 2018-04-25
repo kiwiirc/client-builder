@@ -1,9 +1,14 @@
 <template>
-  <div>
-    <div v-for="option in options" :key="option.value">
-      <input type="checkbox" value = "{{ option.SSOptions }}">
-      <label for="{{ option.SSOptions }}">{{ option.SSOptions }}</label>
-    </div>
+  <div id="inputContainer">
+    <select v-model="selected" @change="update">
+      <option disabled selected value="">Choose a Theme</option>
+      <option value = "Theme 1">Theme 1</option>
+      <option value = "Theme 2">Theme 2</option>
+      <option value = "Theme 3">Theme 3</option>
+      <option value = "Theme 4">Theme 4</option>
+      <option value = "Theme 5">Theme 5</option>
+      <option value = "Theme 6">Theme 6</option>
+    </select><br>
   </div>
 </template>
 
@@ -12,16 +17,27 @@ export default {
   name: 'Theme',
   data: () => {
     return {
-      selected: '1',
-      options: [
-        { SSOptions: 'One', value: '1' },
-        { SSOptions: 'Two', value: '2' },
-        { SSOptions: 'Three', value: '3' }
-      ]
+      selected: ''
     }
+  },
+  methods: {
+    update: function (e) {
+      this.$emit('update', { source: 'Theme', data: { theme: this.selected } })
+    }
+  },
+  beforeMount () {
+    this.update()
   }
 }
 </script>
 
 <style scoped>
+select{
+  font-size:1.25em;
+  text-align: center;
+}
+#inputContainer{
+  margin:10px;
+  line-height:2.5em;
+}
 </style>

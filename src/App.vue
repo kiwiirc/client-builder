@@ -1,21 +1,26 @@
 <template>
   <div id="app">
-    <div id="header">Kiwi Client Builder Tool</div>
+    <div id="header">
+      <button class="FinishButton">Export HTML</button>
+      <span class="headerText">Kiwi Client Builder Tool</span>
+    </div>
     <vue-tabs class="tabs">
       <v-tab title="Startup Screen">
-        <StartupScreen v-on:update="receiveOptions"></StartupScreen>
+        <StartupScreen v-on:update="receive"></StartupScreen>
       </v-tab>
 
       <v-tab title="Message View">
-        <MessageView></MessageView>
+        <MessageView v-on:update="receive"></MessageView>
       </v-tab>
 
       <v-tab title="Theme">
-        <Theme></Theme>
+        <Theme v-on:update="receive"></Theme>
       </v-tab>
     </vue-tabs>
     <div class="preview">
-      output: {{ output.data }}
+      <pre>
+        {{ JSON.stringify(configOptions, null, 2) }}
+      </pre>
     </div>
   </div>
 </template>
@@ -38,14 +43,12 @@ export default {
   },
   data: () => {
     return {
-      json: [],
-      output: { data: 1 }
+      configOptions: { StartupScreen: [], MessageView: [], Theme: [] }
     }
   },
   methods: {
-    receiveOptions: function (val) {
-      Vue.set(this.output, 'data', val)
-      console.log(val)
+    receive: function (val) {
+      this.configOptions[val.source] = val.data
     }
   }
 }
@@ -63,19 +66,36 @@ body{
   text-align: center;
 }
 #header{
-  font-size:2.5em;
+  text-align:left;
   color: #ffc;
   background: #113;
   color: #fff;
+  height:65px;
+}
+.headerText{
+  font-size:30px;
+  margin-left:30px;
 }
 .tabs{
   float:left;
-  width: calc(33.33% - 20px);
+  width: 380px;
   text-align:left;
   margin:10px;
 }
 .preview{
-  width:66.66%;
+  width: calc(100% - 420px);
+  padding: 10px;
+  height: 100%;
   float:right;
+  text-align:justify;
+  background:#edc;
+}
+.FinishButton{
+  margin:10px;
+  width:220px;
+  background:#6e8;
+  border-radius:5px;
+  font-size:30px;
+  top: 0;
 }
 </style>

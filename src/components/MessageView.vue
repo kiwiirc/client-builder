@@ -1,8 +1,9 @@
 <template>
-  <div>
-    <div v-for="option in options" :key="option.value">
-      <input type="checkbox" value = "{{ option.SSOptions }}">
-      <label for="{{ option.SSOptions }}">{{ option.SSOptions }}</label>
+  <div id="inputContainer">
+    <div v-for="field in fields" :key="field">
+      <div class="label">{{field.name}}</div>
+      <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
+      <br>
     </div>
   </div>
 </template>
@@ -12,16 +13,40 @@ export default {
   name: 'MessageView',
   data: () => {
     return {
-      selected: '1',
-      options: [
-        { SSOptions: 'One', value: '1' },
-        { SSOptions: 'Two', value: '2' },
-        { SSOptions: 'Three', value: '3' }
+      fields: [
+        {type: 'checkbox', name: 'Compact View', value: ''},
+        {type: 'checkbox', name: 'Emojis', value: ''},
+        {type: 'checkbox', name: 'Extra Formatting (markdown)', value: ''},
+        {type: 'checkbox', name: 'Private Messages', value: ''},
+        {type: 'checkbox', name: 'Show join / parts', value: ''}
       ]
     }
+  },
+  methods: {
+    update: function (e) {
+      let out = {}
+      let field = {}
+      for (let i = 0; i < this.fields.length; ++i) {
+        field = this.fields[i]
+        out[field.name] = field.value
+      }
+      this.$emit('update', { source: 'MessageView', data: { WelcomeScreen: out } })
+    }
+  },
+  beforeMount () {
+    this.update()
   }
 }
 </script>
 
 <style scoped>
+#inputContainer{
+  margin:10px;
+  line-height:2.5em;
+}
+.label{
+  width:210px;
+  text-align:right;
+  display: inline-block;
+}
 </style>
