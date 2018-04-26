@@ -1,7 +1,6 @@
 <template>
   <div id="inputContainer">
-    <select v-model="selected">
-      <option disabled selected value="">Make a Selection</option>
+    <select v-model="selected" @change="update">
       <option value = "WelcomeScreen">Welcome Screen</option>
       <option value = "CustomServer">Custom Server</option>
       <option value = "ZNC">ZNC</option>
@@ -35,44 +34,45 @@ export default {
   name: 'StartupScreen',
   data: () => {
     return {
-      selected: '',
+      selected: 'WelcomeScreen',
       WSfields: [
-        {type: 'text', name: 'greetingText', value: ''},
-        {type: 'text', name: 'buttonText', value: ''},
-        {type: 'text', name: 'infoContent', value: ''},
-        {type: 'text', name: 'showChannel', value: ''},
-        {type: 'text', name: 'showNick', value: ''},
-        {type: 'checkbox', name: 'showPassword', value: ''},
-        {type: 'checkbox', name: 'autoConnect', value: ''},
-        {type: 'checkbox', name: 'recaptcha', value: ''},
-        {type: 'text', name: 'server', value: ''},
-        {type: 'text', name: 'port', value: ''},
-        {type: 'checkbox', name: 'tls', value: ''},
+        {type: 'text', name: 'greetingText', value: 'Welcome to KiwiIRC!'},
+        {type: 'text', name: 'buttonText', value: 'Connect'},
+        {type: 'text', name: 'infoContent', value: 'Have a nice day!'},
+        {type: 'checkbox', name: 'showChannel', value: true},
+        {type: 'checkbox', name: 'showNick', value: true},
+        {type: 'checkbox', name: 'showPassword', value: false},
+        {type: 'checkbox', name: 'autoConnect', value: false},
+        {type: 'checkbox', name: 'recaptcha', value: false},
+        {type: 'checkbox', name: 'restricted', value: true},
+        {type: 'text', name: 'server', value: 'irc.freenode.net'},
+        {type: 'text', name: 'port', value: '6667'},
+        {type: 'checkbox', name: 'tls', value: false},
         {type: 'text', name: 'encoding', value: ''},
-        {type: 'text', name: 'direct', value: ''},
+        {type: 'checkbox', name: 'direct', value: false},
         {type: 'text', name: 'direct_path', value: ''},
         {type: 'text', name: 'gecos', value: ''},
-        {type: 'text', name: 'nick', value: ''},
-        {type: 'text', name: 'password', value: ''},
-        {type: 'text', name: 'channel', value: ''}
+        {type: 'text', name: 'nick', value: 'kiwi-n?'},
+        {type: 'password', name: 'password', value: ''},
+        {type: 'text', name: 'channel', value: '#kiwiirc-default'}
       ],
       CSfields: [
-        {type: 'text', name: 'server', value: ''},
-        {type: 'text', name: 'port', value: ''},
-        {type: 'checkbox', name: 'tls', value: ''},
+        {type: 'text', name: 'server', value: 'irc.freenode.net'},
+        {type: 'text', name: 'port', value: '6667'},
+        {type: 'checkbox', name: 'tls', value: false},
         {type: 'text', name: 'encoding', value: ''},
-        {type: 'text', name: 'direct', value: ''},
+        {type: 'checkbox', name: 'direct', value: false},
         {type: 'text', name: 'direct_path', value: ''},
         {type: 'text', name: 'gecos', value: ''},
-        {type: 'text', name: 'nick', value: ''},
-        {type: 'text', name: 'password', value: ''},
-        {type: 'text', name: 'channel', value: ''},
+        {type: 'text', name: 'nick', value: 'kiwi-n?'},
+        {type: 'password', name: 'password', value: ''},
+        {type: 'text', name: 'channel', value: '#kiwiirc-default'},
         {type: 'text', name: 'greetingText', value: ''},
-        {type: 'text', name: 'buttonText', value: ''}
+        {type: 'text', name: 'buttonText', value: 'Connect'}
       ],
       ZNCfields: [
         {type: 'text', name: 'username', value: ''},
-        {type: 'text', name: 'password', value: ''},
+        {type: 'password', name: 'password', value: ''},
         {type: 'text', name: 'network', value: ''},
         {type: 'checkbox', name: 'showNetwork', value: ''},
         {type: 'checkbox', name: 'showUser', value: ''},
@@ -82,7 +82,7 @@ export default {
         {type: 'text', name: 'port', value: ''},
         {type: 'checkbox', name: 'tls', value: ''},
         {type: 'text', name: 'greetingText', value: ''},
-        {type: 'text', name: 'buttonText', value: ''},
+        {type: 'text', name: 'buttonText', value: 'Connect'},
         {type: 'text', name: 'infoContent', value: ''}
       ]
     }
@@ -105,10 +105,17 @@ export default {
         field = this.ZNCfields[i]
         ZNCout[field.name] = field.value
       }
-      this.$emit('update', { source: 'StartupScreen', data: { WelcomeScreen: WSout, CustomServer: CSout, ZNC: ZNCout } })
+      let out = {}
+      let startupScreen = ''
+      switch (this.selected) {
+        case 'WelcomeScreen': out = WSout; startupScreen = 'welcome'; break
+        case 'CustomServer': out = CSout; startupScreen = 'customServer'; break
+        case 'ZNC': out = ZNCout; startupScreen = 'znc'; break
+      }
+      this.$emit('update', { source: 'StartupScreen', data: out, startupScreen })
     }
   },
-  beforeMount () {
+  mounted: function () {
     this.update()
   }
 }

@@ -33,7 +33,7 @@ export default {
       this.$emit('update', { source: 'MessageView', data: out })
     }
   },
-  beforeMount () {
+  mounted: function () {
     this.update()
   }
 }
