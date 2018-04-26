@@ -1,8 +1,9 @@
 <template>
   <div id="inputContainer">
     <div v-for="field in fields" :key="field">
-      <div class="label">{{field.name}}</div>
+      <label><div class="label">{{field.name}}</div>
       <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
+      </label>
       <br>
     </div>
   </div>

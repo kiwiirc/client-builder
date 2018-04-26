@@ -7,23 +7,25 @@
     </select><br>
     <div v-if="selected == 'WelcomeScreen'">
       <div v-for="field in WSfields" :key="field">
-        <div class="label">{{field.name}}</div>
+        <label><div class="label">{{field.name}}</div>
         <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
+        </label>
         <br>
       </div>
     </div>
     <div v-else-if="selected == 'CustomServer'">
       <div v-for="field in CSfields" :key="field">
-        <div class="label">{{field.name}}</div>
+        <label><div class="label">{{field.name}}</div>
         <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
+        </label>
         <br>
       </div>
     </div>
     <div v-else-if="selected == 'ZNC'">
       <div v-for="field in ZNCfields" :key="field">
-        <div class="label">{{field.name}}</div>
+        <label><div class="label">{{field.name}}</div>
         <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
-        <br>
+        </label><br>
       </div>
     </div>
   </div>
