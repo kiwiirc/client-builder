@@ -1,8 +1,8 @@
 <template>
   <div id="inputContainer">
     <select v-model="localData.config.theme" @change="update">
-      <option selected value = "Default">Default</option>
-      <option value = "Dark">Dark</option>
+      <option value = "Default">Default</option>
+      <option selected value = "Dark">Dark</option>
     </select><br>
   </div>
 </template>
