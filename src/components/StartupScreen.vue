@@ -1,124 +1,344 @@
 <template>
   <div id="inputContainer">
-    <select v-model="selected" @change="update">
-      <option value = "WelcomeScreen">Welcome Screen</option>
-      <option value = "CustomServer">Custom Server</option>
-      <option value = "ZNC">ZNC</option>
+    <select v-model="localData.config.startupScreen" @change="update">
+      <option value = "welcome">Welcome Screen</option>
+      <option value = "customServer">Custom Server</option>
+      <option value = "znc">ZNC</option>
     </select><br>
-    <div v-if="selected == 'WelcomeScreen'">
-      <div v-for="field in WSfields" :key="field">
-        <label><div class="label">{{field.name}}</div>
-        <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
-        </label>
-        <br>
-      </div>
+    <div v-if="localData.config.startupScreen == 'welcome'">
+      <label>
+        <div class="label">Greeting Text</div>
+        <input v-model="localData.config.startupOptions.greetingText"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Button Text</div>
+        <input v-model="localData.config.startupOptions.buttonText"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Info Content</div>
+        <input v-model="localData.config.startupOptions.infoContent"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Show Channel</div>
+        <input v-model="localData.config.startupOptions.showChannel"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Show Nick</div>
+        <input v-model="localData.config.startupOptions.showNick"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Show Password</div>
+        <input v-model="localData.config.startupOptions.showPassword"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Auto-Connect</div>
+        <input v-model="localData.config.startupOptions.autoConnect"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Recaptcha</div>
+        <input v-model="localData.config.startupOptions.recaptcha"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">restricted</div>
+        <input v-model="localData.config.restricted"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Server</div>
+        <input v-model="localData.config.startupOptions.server"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Port</div>
+        <input v-model="localData.config.startupOptions.port"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label>
+      <label>
+        <div class="tlsLabel">TLS</div>
+        <input v-model="localData.config.startupOptions.tls"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Encoding</div>
+        <input v-model="localData.config.startupOptions.encoding"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Direct</div>
+        <input v-model="localData.config.startupOptions.direct"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Direct Path</div>
+        <input v-model="localData.config.startupOptions.direct_path"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">gecos</div>
+        <input v-model="localData.config.startupOptions.gecos"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Nick</div>
+        <input v-model="localData.config.startupOptions.nick"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Password</div>
+        <input v-model="localData.config.startupOptions.password"
+          @change="update" @keyup="update"
+          type='password'
+        />
+      </label><br>
+      <label>
+        <div class="label">Channel</div>
+        <input v-model="localData.config.startupOptions.channel"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
     </div>
-    <div v-else-if="selected == 'CustomServer'">
-      <div v-for="field in CSfields" :key="field">
-        <label><div class="label">{{field.name}}</div>
-        <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
-        </label>
-        <br>
-      </div>
+
+    <div v-else-if="localData.config.startupScreen == 'customServer'">
+      <label>
+        <div class="label">Server</div>
+        <input v-model="localData.config.startupOptions.server"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Port</div>
+        <input v-model="localData.config.startupOptions.port"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label>
+      <label>
+        <div class="tlsLabel">TLS</div>
+        <input v-model="localData.config.startupOptions.tls"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Encoding</div>
+        <input v-model="localData.config.startupOptions.encoding"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Direct</div>
+        <input v-model="localData.config.startupOptions.direct"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Direct Path</div>
+        <input v-model="localData.config.startupOptions.directPath"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">gecos</div>
+        <input v-model="localData.config.startupOptions.gecos"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Nick</div>
+        <input v-model="localData.config.startupOptions.nick"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Password</div>
+        <input v-model="localData.config.startupOptions.password"
+          @change="update" @keyup="update"
+          type='password'
+        />
+      </label><br>
+      <label>
+        <div class="label">Channel</div>
+        <input v-model="localData.config.startupOptions.channel"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Button Text</div>
+        <input v-model="localData.config.startupOptions.buttonText"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Greeting Text</div>
+        <input v-model="localData.config.startupOptions.greetingText"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
     </div>
-    <div v-else-if="selected == 'ZNC'">
+
+    <div v-else-if="localData.config.startupScreen == 'znc'">
+      <label>
+        <div class="label">User Name</div>
+        <input v-model="localData.config.startupOptions.userName"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Password</div>
+        <input v-model="localData.config.startupOptions.password"
+          @change="update" @keyup="update"
+          type='password'
+        />
+      </label><br>
+      <label>
+        <div class="label">Network</div>
+        <input v-model="localData.config.startupOptions.network"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Show Network</div>
+        <input v-model="localData.config.startupOptions.showNetwork"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Show User</div>
+        <input v-model="localData.config.startupOptions.showUser"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Show Pass</div>
+        <input v-model="localData.config.startupOptions.showPass"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Auto-Connect</div>
+        <input v-model="localData.config.startupOptions.autoConnect"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Server</div>
+        <input v-model="localData.config.startupOptions.server"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Port</div>
+        <input v-model="localData.config.startupOptions.port"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label>
+      <label>
+        <div class="tlsLabel">TLS</div>
+        <input v-model="localData.config.startupOptions.tls"
+          @change="update" @keyup="update"
+          type='checkbox'
+        />
+      </label><br>
+      <label>
+        <div class="label">Greeting Text</div>
+        <input v-model="localData.config.startupOptions.greetingText"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Button Text</div>
+        <input v-model="localData.config.startupOptions.buttonText"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+      <label>
+        <div class="label">Info Content</div>
+        <input v-model="localData.config.startupOptions.infoContent"
+          @change="update" @keyup="update"
+          type='text'
+        />
+      </label><br>
+    </div>
+    <!--
       <div v-for="field in ZNCfields" :key="field">
         <label><div class="label">{{field.name}}</div>
-        <input :type="field.type" v-model="field.value" @change="update" @keyup="update">
+        <input :type="field.type" @change="update" @keyup="update">
         </label><br>
       </div>
-    </div>
+    -->
   </div>
 </template>
 
 <script>
 export default {
   name: 'StartupScreen',
-  data: () => {
-    return {
-      selected: 'WelcomeScreen',
-      WSfields: [
-        {type: 'text', name: 'greetingText', value: 'Welcome to KiwiIRC!'},
-        {type: 'text', name: 'buttonText', value: 'Connect'},
-        {type: 'text', name: 'infoContent', value: 'Have a nice day!'},
-        {type: 'checkbox', name: 'showChannel', value: true},
-        {type: 'checkbox', name: 'showNick', value: true},
-        {type: 'checkbox', name: 'showPassword', value: false},
-        {type: 'checkbox', name: 'autoConnect', value: false},
-        {type: 'checkbox', name: 'recaptcha', value: false},
-        {type: 'checkbox', name: 'restricted', value: true},
-        {type: 'text', name: 'server', value: 'irc.freenode.net'},
-        {type: 'text', name: 'port', value: '6667'},
-        {type: 'checkbox', name: 'tls', value: false},
-        {type: 'text', name: 'encoding', value: ''},
-        {type: 'checkbox', name: 'direct', value: false},
-        {type: 'text', name: 'direct_path', value: ''},
-        {type: 'text', name: 'gecos', value: ''},
-        {type: 'text', name: 'nick', value: 'kiwi-n?'},
-        {type: 'password', name: 'password', value: ''},
-        {type: 'text', name: 'channel', value: '#kiwiirc-default'}
-      ],
-      CSfields: [
-        {type: 'text', name: 'server', value: 'irc.freenode.net'},
-        {type: 'text', name: 'port', value: '6667'},
-        {type: 'checkbox', name: 'tls', value: false},
-        {type: 'text', name: 'encoding', value: ''},
-        {type: 'checkbox', name: 'direct', value: false},
-        {type: 'text', name: 'direct_path', value: ''},
-        {type: 'text', name: 'gecos', value: ''},
-        {type: 'text', name: 'nick', value: 'kiwi-n?'},
-        {type: 'password', name: 'password', value: ''},
-        {type: 'text', name: 'channel', value: '#kiwiirc-default'},
-        {type: 'text', name: 'greetingText', value: ''},
-        {type: 'text', name: 'buttonText', value: 'Connect'}
-      ],
-      ZNCfields: [
-        {type: 'text', name: 'username', value: ''},
-        {type: 'password', name: 'password', value: ''},
-        {type: 'text', name: 'network', value: ''},
-        {type: 'checkbox', name: 'showNetwork', value: ''},
-        {type: 'checkbox', name: 'showUser', value: ''},
-        {type: 'checkbox', name: 'showPass', value: ''},
-        {type: 'checkbox', name: 'autoConnect', value: ''},
-        {type: 'text', name: 'server', value: ''},
-        {type: 'text', name: 'port', value: ''},
-        {type: 'checkbox', name: 'tls', value: ''},
-        {type: 'text', name: 'greetingText', value: ''},
-        {type: 'text', name: 'buttonText', value: 'Connect'},
-        {type: 'text', name: 'infoContent', value: ''}
-      ]
-    }
-  },
+  props: ['localData'],
   methods: {
-    update: function (e) {
-      let WSout = {}
-      let CSout = {}
-      let ZNCout = {}
-      let field = {}
-      for (let i = 0; i < this.WSfields.length; ++i) {
-        field = this.WSfields[i]
-        WSout[field.name] = field.value
-      }
-      for (let i = 0; i < this.CSfields.length; ++i) {
-        field = this.CSfields[i]
-        CSout[field.name] = field.value
-      }
-      for (let i = 0; i < this.ZNCfields.length; ++i) {
-        field = this.ZNCfields[i]
-        ZNCout[field.name] = field.value
-      }
-      let out = {}
-      let startupScreen = ''
-      switch (this.selected) {
-        case 'WelcomeScreen': out = WSout; startupScreen = 'welcome'; break
-        case 'CustomServer': out = CSout; startupScreen = 'customServer'; break
-        case 'ZNC': out = ZNCout; startupScreen = 'znc'; break
-      }
-      this.$emit('update', { source: 'StartupScreen', data: out, startupScreen })
+    update: function () {
+      this.$emit('setConfig', 1)
     }
-  },
-  mounted: function () {
-    this.update()
   }
 }
 </script>
@@ -136,7 +356,12 @@ select{
   line-height:2.5em;
 }
 .label{
-  width:110px;
+  width:115px;
+  text-align:right;
+  display: inline-block;
+}
+.tlsLabel{
+  width:25px;
   text-align:right;
   display: inline-block;
 }

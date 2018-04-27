@@ -1,6 +1,6 @@
 <template>
   <div id="inputContainer">
-    <select v-model="selected" @change="update">
+    <select v-model="localData.config.theme" @change="update">
       <option selected value = "Default">Default</option>
       <option value = "Dark">Dark</option>
     </select><br>
@@ -10,18 +10,11 @@
 <script>
 export default {
   name: 'Theme',
-  data: () => {
-    return {
-      selected: 'Dark'
-    }
-  },
+  props: ['localData'],
   methods: {
-    update: function (e) {
-      this.$emit('update', { source: 'Theme', data: { theme: this.selected } })
+    update: function () {
+      this.$emit('setConfig', 1)
     }
-  },
-  mounted: function () {
-    this.update()
   }
 }
 </script>

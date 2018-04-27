@@ -6,15 +6,15 @@
     </div>
     <vue-tabs class="tabs">
       <v-tab title="Startup Screen">
-        <StartupScreen v-on:update="receive"></StartupScreen>
+        <StartupScreen :localData="localData" v-on:setConfig="setConfig"></StartupScreen>
       </v-tab>
 
       <v-tab title="Message View">
-        <MessageView v-on:update="receive"></MessageView>
+        <MessageView :localData="localData" v-on:setConfig="setConfig"></MessageView>
       </v-tab>
 
       <v-tab title="Theme">
-        <Theme v-on:update="receive"></Theme>
+        <Theme :localData="localData" v-on:setConfig="setConfig"></Theme>
       </v-tab>
     </vue-tabs>
     <div class="preview">
@@ -48,15 +48,41 @@ window.currentConfig = {
     'tls': false,
     'direct': false,
     'channel': '#kiwiirc-default',
-    'nick': 'kiwi-n?'
+    'nick': 'kiwi-n?',
+    'password': '',
+    'greetingText': 'Welcome to KiwiIRC!',
+    'infoContent': 'Have a nice day!',
+    'buttonText': 'Connect...',
+    'showChannel': true,
+    'showNick': true,
+    'showUser': true,
+    'showPassword': true,
+    'autoConnect': false,
+    'recaptcha': false,
+    'encoding': '',
+    'directPath': '',
+    'gecos': ''
   },
   'embedly': {
     'key': ''
   },
   'plugins': [
   ],
-  warnOnExit: false
+  'warnOnExit': false,
+  'compactView': false,
+  'emojis': true,
+  'extraFormatting': false,
+  'privateMessages': true,
+  'showJoinsParts': true
 }
+
+var data = new Vue({
+  data: function () {
+    return {
+      config: window.currentConfig
+    }
+  }
+})
 
 export default {
   name: 'App',
@@ -65,31 +91,13 @@ export default {
     StartupScreen,
     MessageView
   },
-  data: () => {
+  data: function () {
     return {
-      configOptions: { StartupScreen: [], MessageView: [], Theme: [] },
-      kiwiInstanceURL: 'https://cantelope.ml/Darren/kiwiirc/dist' // must be absolute
+      localData: data,
+      kiwiInstanceURL: 'https://cantelope.ml/Darren/kiwiirc/dist'
     }
   },
   methods: {
-    receive: function (val) {
-      this.configOptions[val.source] = val.data
-      if (typeof val.startupScreen !== 'undefined') {
-        window.currentConfig.startupScreen = val.startupScreen
-      }
-      if (typeof val.data.theme !== 'undefined') {
-        window.currentConfig.theme = val.data.theme
-      } else {
-        for (let key in val.data) {
-          if (key === 'restricted') {
-            window.currentConfig.restricted = val.data[key]
-          } else if (val.data.hasOwnProperty(key)) {
-            window.currentConfig.startupOptions[key] = val.data[key]
-          }
-        }
-      }
-      this.setConfig()
-    },
     setConfig: function () {
       let el = document.getElementById('previewFrame')
       if (el) {
@@ -98,8 +106,8 @@ export default {
     },
     download: function () {
       let HTML = '<!DOCTYPE html><html><head><style>body{margin:0}iframe{width:100%;height:100vh;border:0;display:block}</style></head>'
-      window.currentConfig.warnOnExit = true
-      let conf = encodeURIComponent(JSON.stringify(window.currentConfig))
+      this.localData.config.warnOnExit = true
+      let conf = encodeURIComponent(JSON.stringify(this.localData.config))
       HTML += '<body><iframe src="' + this.kiwiInstanceURL + '?tokenizedConfig=' + conf + '"></iframe></body></html>'
       let el = document.createElement('a')
       el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(HTML))
@@ -109,6 +117,9 @@ export default {
       el.click()
       document.body.removeChild(el)
     }
+  },
+  mounted: function () {
+    this.setConfig()
   }
 }
 
