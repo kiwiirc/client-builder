@@ -17,8 +17,8 @@
       <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
     </div>
 	<div id="header">
-	  <button class="FinishButton" @click="download">Export HTML</button>
 	  <span class="headerText">Kiwi Client Builder Tool</span>
+	  <button class="FinishButton" @click="download">Export HTML</button>
 	</div>
   </div>
 </template>

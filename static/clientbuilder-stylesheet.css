@@ -8,17 +8,45 @@
 
 #header{
   float: right;
-  text-align:left;
+  text-align:right;
   color: #ffc;
-  background: #113;
-  color: #fff;
-  height:65px;
+  background: #f7f7f7;
+  height:50px;
   width: 100%;
+  padding: 0 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .headerText{
   font-size:30px;
   margin-left:30px;
+  color: #5f5f5f;
+  font-size: 1em;
+  line-height: 51px;
+}
+
+#header .FinishButton {
+	float: right;
+    border: 2px solid #53cea6;
+    color: #53cea6;
+    text-align: center;
+    padding: 0 25px;
+    background: none;
+    transition: all 0.3s;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px auto 0 15px;
+    width: auto;
+    border-radius: 2px;
+    line-height: 38px;
+    font-size: 1em;
+}
+
+#header .FinishButton:hover {
+	background: #53cea6;
+	color: #fff;
+	text-decoration: underline;
 }
 
 .nav-tabs-navigation {

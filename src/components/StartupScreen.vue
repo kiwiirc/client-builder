@@ -224,7 +224,6 @@
 			/>
 		</div>
 
-
 		<div class='input-column'>
 			<h3>Network Settings</h3>
 			<label>Server</label>
