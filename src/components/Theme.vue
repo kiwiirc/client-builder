@@ -1,9 +1,13 @@
 <template>
   <div id="inputContainer">
-    <select v-model="localData.config.theme" @change="update">
-      <option selected value = "Default">Default</option>
-      <option value = "Dark">Dark</option>
-    </select><br>
+ 	<div class="input-column">
+		<h3>Kiwi Theme</h3>
+		<label>Select theme to use: </label>
+	    <select v-model="localData.config.theme" @change="update">
+	      <option selected value = "Default">Default</option>
+	      <option value = "Dark">Dark</option>
+	    </select>
+	</div>
   </div>
 </template>
 

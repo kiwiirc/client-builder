@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <div id="header">
-      <button class="FinishButton" @click="download">Export HTML</button>
-      <span class="headerText">Kiwi Client Builder Tool</span>
-    </div>
     <vue-tabs class="tabs">
       <v-tab title="Startup Screen">
         <StartupScreen :localData="localData" v-on:setConfig="setConfig"></StartupScreen>
@@ -20,6 +16,10 @@
     <div class="preview">
       <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
     </div>
+	<div id="header">
+	  <button class="FinishButton" @click="download">Export HTML</button>
+	  <span class="headerText">Kiwi Client Builder Tool</span>
+	</div>
   </div>
 </template>
 
@@ -124,54 +124,3 @@ export default {
 }
 
 </script>
-
-<style>
-body{
-  margin: 0;
-}
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-}
-#header{
-  text-align:left;
-  color: #ffc;
-  background: #113;
-  color: #fff;
-  height:65px;
-}
-.headerText{
-  font-size:30px;
-  margin-left:30px;
-}
-.tabs{
-  float:left;
-  width: 380px;
-  text-align:left;
-  margin:10px;
-}
-.preview{
-  width: calc(100% - 420px);
-  padding: 10px;
-  height: 100%;
-  float:left;
-  text-align:justify;
-  background:#edc;
-  min-width:400px;
-}
-.FinishButton{
-  margin:10px;
-  width:220px;
-  background:#6e8;
-  border-radius:5px;
-  font-size:30px;
-  top: 0;
-}
-#previewFrame{
-  width:100%;
-  height: calc(100vh - 90px);
-  display:block;
-}
-</style>
