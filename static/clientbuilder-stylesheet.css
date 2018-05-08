@@ -130,7 +130,8 @@
 
 .tabs .input-column input[type="text"],
 .tabs .input-column select,
-.tabs .input-column textarea {
+.tabs .input-column textarea,
+.tabs .input-column input[type="password"] {
 	float: left;
 	height: 40px;
 	padding: 0 10px;
