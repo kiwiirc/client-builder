@@ -44,7 +44,7 @@
 .vue-tabs .nav-tabs > li > a,
 .vue-tabs .nav-tabs > li > a:hover,
 .vue-tabs .nav-tabs > li > a:focus {
-	color: #53cea6 !important;
+	color: #000 !important;
 	background-color: #fff !important;
 	opacity: 0.8 !important;
 }
@@ -54,14 +54,18 @@
 	opacity: 1 !important;
 }
 
+.vue-tabs .nav-tabs > li > a:hover {
+	border-bottom: none !important;
+}
+
 
 .vue-tabs .nav-tabs li.active a,
 .vue-tabs .nav-tabs > li.active > a:hover,
 .vue-tabs .nav-tabs > li.active > a:focus {
-	background-color: #53cea6 !important;
-	color: #fff !important;
+	background-color: #fff !important;
+	color: #53cea6 !important;
 	font-weight: 600 !important;
-	opacity: 1;
+	opacity: 1 !important;
 }
 
 
@@ -121,6 +125,7 @@
 	line-height: normal;
 	color: #5f5f5f;
 	font-size: 1em;
+	cursor: default;
 }
 
 .tabs .input-column input[type="text"],
