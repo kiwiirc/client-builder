@@ -1,9 +1,12 @@
 <template>
   <div id="inputContainer">
+  	<div class='input-column'>
+	<h3>Theme Selection </h3>
     <select v-model="localData.config.theme" @change="update">
-      <option selected value = "Default">Default</option>
-      <option value = "Dark">Dark</option>
-    </select><br>
+      <option value = "Default">Default</option>
+      <option selected value = "Dark">Dark</option>
+    </select>
+	</div>
   </div>
 </template>
 

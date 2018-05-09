@@ -1,40 +1,55 @@
 <template>
   <div id="inputContainer">
-    <label>
-      <div class="label">Compact View</div>
-      <input v-model="localData.config.compactView"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
-    <label>
-      <div class="label">Emojis</div>
-      <input v-model="localData.config.emojis"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
-    <label>
-      <div class="label">Extra Formatting (markdown)</div>
-      <input v-model="localData.config.extraFormatting"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
-    <label>
-      <div class="label">Private Messages</div>
-      <input v-model="localData.config.privateMessages"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
-    <label>
-      <div class="label">Show Join / Parts</div>
-      <input v-model="localData.config.showJoinParts"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
+  	<div class="input-column">
+
+		<h3>Message View Settings </h3>
+
+		<div class="checkbox-container">
+			<label>Compact View</label>
+			<input v-model="localData.config.compactView"
+			@change="update" @keyup="update"
+			type='checkbox'
+			/>
+		</div>
+
+		<div class="checkbox-container">
+			<label>Emojis</label>
+			<input v-model="localData.config.emojis"
+			  @change="update" @keyup="update"
+			  type='checkbox'
+			/>
+		</div>
+
+		<div class="checkbox-container">
+			<label>Extra Formatting (markdown)</label>
+			<input v-model="localData.config.extraFormatting"
+			@change="update" @keyup="update"
+			type='checkbox'
+			/>
+		</div>
+
+		<div class="checkbox-container">
+			<label>Private Messages</label>
+			<input v-model="localData.config.privateMessages"
+			  @change="update" @keyup="update"
+			  type='checkbox'
+			/>
+		</div>
+
+		<div class="checkbox-container">
+			<label>Show Join / Parts</label>
+			<input v-model="localData.config.showJoinParts"
+			  @change="update" @keyup="update"
+			  type='checkbox'
+			/>
+		</div>
+
+		</div>
+	</div>
+
+
+
+
   </div>
 </template>
 
