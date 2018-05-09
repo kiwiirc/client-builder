@@ -1,27 +1,33 @@
 <template>
   <div id="inputContainer">
-    <label>
-      <div class="label">Conferencing (Jitsi-Meet)</div>
-      <input v-model="conferencePlugin"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
-    <label>
-      <div class="label">File Uploader</div>
-      <input v-model="fileuploader"
-        @change="update" @keyup="update"
-        type='checkbox'
-      />
-    </label><br>
-    <label>
-      <div class="label">Starry Plugin</div>
-      <input v-model="starryPlugin"
-        @change="update" @keyup="update"
-        type='checkbox'
-        name = 'starryPlugin'
-      />
-    </label><br>
+  	<div class='input-column'>
+		<h3>Plugin Settings</h3>
+		<div class='checkbox-container'>
+			<label>Conferencing (Jitsi-Meet)</label>
+			<input v-model="conferencePlugin"
+			  @change="update" @keyup="update"
+			  type='checkbox'
+			/>
+		</div>
+
+		<div class='checkbox-container'>
+			<label>File Uploader</label>
+			  <input v-model="fileuploader"
+  			  @change="update" @keyup="update"
+  			  type='checkbox'
+  		  	/>
+		</div>
+
+		<div class='checkbox-container'>
+			<label>Starry Plugin</label>
+			<input v-model="starryPlugin"
+			  @change="update" @keyup="update"
+			  type='checkbox'
+			  name = 'starryPlugin'
+			/>
+		</div>
+
+	</div>
   </div>
 </template>
 
