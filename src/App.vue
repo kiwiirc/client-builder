@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import Api from '@/libs/Api'
 import VueTabs from 'vue-nav-tabs'
 import 'vue-nav-tabs/themes/vue-tabs.css'
 import Vue from 'vue'
@@ -102,7 +103,7 @@ export default {
   data: function () {
     return {
       localData: data,
-      kiwiInstanceURL: data.baseURL + '/Darren/kiwiirc/dist', // must be absolute
+      kiwiInstanceURL: data.baseURL + '/Darren/kiwiirc/dist/index.php', // must be absolute
       changeThrottleTimer: 0
     }
   },
@@ -111,12 +112,16 @@ export default {
       let d = new Date()
       setTimeout(this.doConfig, Math.max(this.changeThrottleTimer - d.getTime(), 0))
     },
-    doConfig: function () {
+    doConfig: async function () {
+      let url = '/clientconfig'
+      let data = { settings: JSON.stringify(window.currentConfig) }
+      let res = await Api.instance().call(url).post(data).json()
+      this.settingsID = res.settings_id
       let el = document.getElementById('previewFrame')
       if (el) {
         let d = new Date()
         this.changeThrottleTimer = d.getTime() + 2000
-        el.src = this.kiwiInstanceURL + '?externalConfig=1'
+        el.src = this.kiwiInstanceURL + '?settings=' + this.settingsID
       }
     },
     download: function () {
@@ -124,7 +129,7 @@ export default {
       this.localData.config.warnOnExit = true
       this.localData.config.startupOptions.state_key = true
       let conf = encodeURIComponent(JSON.stringify(this.localData.config))
-      HTML += '<body><iframe src="' + this.kiwiInstanceURL + '?tokenizedConfig=' + conf + '"></iframe></body></html>'
+      HTML += '<body><iframe src="' + this.kiwiInstanceURL + '?settings=' + this.settingsID + '"></iframe></body></html>'
       let el = document.createElement('a')
       el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(HTML))
       el.setAttribute('download', 'KiwiClient.html')
