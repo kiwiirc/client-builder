@@ -22,12 +22,12 @@
       </v-tab>
     </vue-tabs>
     <div class="preview">
-      <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
+        <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
     </div>
-	<div id="header">
-	  <button class="FinishButton" @click="download">Export HTML</button>
-	  <span class="headerText">Kiwi Client Builder Tool</span>
-	</div>
+    <div id="header">
+        <button class="FinishButton" @click="download">Export HTML</button>
+        <span class="headerText">Kiwi Client Builder Tool</span>
+    </div>
   </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
   name: 'App',
   components: {
     Theme,
-	NetworkSettings,
+    NetworkSettings,
     StartupScreen,
     MessageView,
     Plugins
