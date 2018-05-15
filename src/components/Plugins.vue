@@ -3,7 +3,7 @@
   	<div class='input-column'>
 		<h3>Plugin Settings</h3>
 		<div class='checkbox-container'>
-			<label>Conferencing (Jitsi-Meet)</label>
+			<label>Conferencing (requires https)</label>
 			<input v-model="conferencePlugin"
 			  @change="update" @keyup="update"
 			  type='checkbox'
