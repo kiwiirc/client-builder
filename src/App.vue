@@ -110,7 +110,7 @@ export default {
   methods: {
     setConfig: function () {
       let d = new Date()
-      setTimeout(this.doConfig, Math.max(this.changeThrottleTimer - d.getTime(), 0))
+      setTimeout(this.doConfig, Math.max(0, this.changeThrottleTimer - d.getTime()))
     },
     doConfig: async function () {
       let url = '/clientconfig'
@@ -142,7 +142,7 @@ export default {
     }
   },
   mounted: function () {
-    this.setConfig()
+    this.doConfig()
   }
 }
 
