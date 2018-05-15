@@ -23,7 +23,9 @@
 	            @change="update" @keyup="update"
 	            type='text'
 	          />
-
+		</div>
+		<div class='input-column'>
+			<h3>&nbsp;</h3>
 	        <label>Info Content</label>
 	          <input v-model="localData.config.startupOptions.infoContent"
 	            @change="update" @keyup="update"
@@ -65,51 +67,6 @@
 				/>
 			</div>
 		</div>
-
-		<div class="input-column">
-			<h3>IRC Network</h3>
-			<label>Server</label>
-			<input v-model="localData.config.startupOptions.server"
-				@change="update" @keyup="update"
-				type='text'
-			/>
-
-			<label>Port</label>
-			<input v-model="localData.config.startupOptions.port"
-				@change="update" @keyup="update"
-				type='text'
-			/>
-
-			<div class="checkbox-container">
-				<label class="tlsLabel">TLS</label>
-				  <input v-model="localData.config.startupOptions.tls"
-					@change="update" @keyup="update"
-					type='checkbox'
-				  />
-			</div>
-		</div>
-
-		<div class="input-column">
-			<h3>&nbsp;</h3>
-
-			<label>Encoding</label>
-			<input v-model="localData.config.startupOptions.encoding"
-				@change="update" @keyup="update"
-				type='text'
-			/>
-
-			<label>Nick</label>
-			<input v-model="localData.config.startupOptions.nick"
-				@change="update" @keyup="update"
-				type='text'
-			/>
-
-			<label>Channel</label>
-			<input v-model="localData.config.startupOptions.channel"
-				@change="update" @keyup="update"
-				type='text'
-			/>
-		</div>
     </div>
 
     <div v-else-if="localData.config.startupScreen == 'customServer'">
@@ -143,61 +100,13 @@
 				  type='checkbox'
 				/>
 			</div>
-
+		</div>
+		<div class='input-column'>
+			<h3>&nbsp;</h3>
 			<label>gecos</label>
 	        <input v-model="localData.config.startupOptions.gecos"
 	          @change="update" @keyup="update"
 	          type='text'
-	        />
-		</div>
-
-		<div class='input-column'>
-			<h3>IRC Network </h3>
-			<label>Server</label>
-			<input v-model="localData.config.startupOptions.server"
-	          @change="update" @keyup="update"
-	          type='text'
-	        />
-
-			<label>Port</label>
-			<input v-model="localData.config.startupOptions.port"
-			  @change="update" @keyup="update"
-			  type='text'
-			/>
-
-			<label>Encoding</label>
-			<input v-model="localData.config.startupOptions.encoding"
-			@change="update" @keyup="update"
-			type='text'
-			/>
-
-			<div class="checkbox-container">
-				<label>TLS</label>
-				<input v-model="localData.config.startupOptions.tls"
-				  @change="update" @keyup="update"
-				  type='checkbox'
-				/>
-			</div>
-		</div>
-
-		<div class='input-column'>
-			<h3>&nbsp;</h3>
-			<label>Channel</label>
-	        <input v-model="localData.config.startupOptions.channel"
-	          @change="update" @keyup="update"
-	          type='text'
-	        />
-
-			<label>Nick</label>
-	        <input v-model="localData.config.startupOptions.nick"
-	          @change="update" @keyup="update"
-	          type='text'
-	        />
-
-			<label>Password</label>
-	        <input v-model="localData.config.startupOptions.password"
-	          @change="update" @keyup="update"
-	          type='password'
 	        />
 		</div>
     </div>
@@ -216,83 +125,14 @@
 			@change="update" @keyup="update"
 			type='text'
 			/>
-
-	        <label>Info Content</label>
+		</div>
+		<div class="input-column">
+			<h3>&nbsp;</h3>
+			<label>Info Content</label>
 			<input v-model="localData.config.startupOptions.infoContent"
 			@change="update" @keyup="update"
 			type='text'
 			/>
-		</div>
-
-		<div class='input-column'>
-			<h3>Network Settings</h3>
-			<label>Server</label>
-			<input v-model="localData.config.startupOptions.server"
-			  @change="update" @keyup="update"
-			  type='text'
-			/>
-			<label>Network</label>
-			<input v-model="localData.config.startupOptions.network"
-			@change="update" @keyup="update"
-			type='text'
-			/>
-		</div>
-
-		<div class='input-column'>
-		<h3>&nbsp;</h3>
-		<label>User Name</label>
-		<input v-model="localData.config.startupOptions.userName"
-		  @change="update" @keyup="update"
-		  type='text'
-		/>
-
-		<label>Password</label>
-		<input v-model="localData.config.startupOptions.password"
-		@change="update" @keyup="update"
-		type='password'
-		/>
-		</div>
-
-		<div class='input-column'>
-			<h3>&nbsp;</h3>
-
-			<label>Port</label>
-			<input v-model="localData.config.startupOptions.port"
-			  @change="update" @keyup="update"
-			  type='text'
-			/>
-
-			<div class='checkbox-container'>
-				<label>Show Network</label>
-				<input v-model="localData.config.startupOptions.showNetwork"
-				@change="update" @keyup="update"
-				type='checkbox'
-				/>
-			</div>
-
-			<div class='checkbox-container'>
-		        <label>Show User</label>
-				<input v-model="localData.config.startupOptions.showUser"
-				@change="update" @keyup="update"
-				type='checkbox'
-				/>
-			</div>
-
-			<div class='checkbox-container'>
-		        <label>Show Pass</label>
-				<input v-model="localData.config.startupOptions.showPass"
-				@change="update" @keyup="update"
-				type='checkbox'
-				/>
-			</div>
-
-			<div class='checkbox-container'>
-				<label>TLS</label>
-				<input v-model="localData.config.startupOptions.tls"
-				  @change="update" @keyup="update"
-				  type='checkbox'
-				/>
-			</div>
 		</div>
     </div>
     <!--
