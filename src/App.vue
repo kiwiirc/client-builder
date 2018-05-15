@@ -1,6 +1,10 @@
 <template>
   <div id="app">
     <vue-tabs class="tabs">
+      <v-tab title="Network Settings">
+        <NetworkSettings :localData="localData" v-on:setConfig="setConfig"></NetworkSettings>
+      </v-tab>
+
       <v-tab title="Startup Screen">
         <StartupScreen :localData="localData" v-on:setConfig="setConfig"></StartupScreen>
       </v-tab>
@@ -18,12 +22,12 @@
       </v-tab>
     </vue-tabs>
     <div class="preview">
-      <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
+        <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
     </div>
-	<div id="header">
-	  <button class="FinishButton" @click="download">Export HTML</button>
-	  <span class="headerText">Kiwi Client Builder Tool</span>
-	</div>
+    <div id="header">
+        <button class="FinishButton" @click="download">Export HTML</button>
+        <span class="headerText">Kiwi Client Builder Tool</span>
+    </div>
   </div>
 </template>
 
@@ -33,6 +37,7 @@ import VueTabs from 'vue-nav-tabs'
 import 'vue-nav-tabs/themes/vue-tabs.css'
 import Vue from 'vue'
 import Theme from './components/Theme.vue'
+import NetworkSettings from './components/NetworkSettings.vue'
 import StartupScreen from './components/StartupScreen.vue'
 import MessageView from './components/MessageView.vue'
 import Plugins from './components/Plugins.vue'
@@ -41,6 +46,7 @@ Vue.use(VueTabs)
 window.currentConfig = {
   'windowTitle': 'Kiwi IRC - The web IRC client',
   'startupScreen': 'welcome',
+  'networkType': 'default',
   'kiwiServer': 'https://localdev.clients.kiwiirc.com/webirc/kiwiirc/',
   'restricted': true,
   'theme': 'Dark',
@@ -96,6 +102,7 @@ export default {
   name: 'App',
   components: {
     Theme,
+    NetworkSettings,
     StartupScreen,
     MessageView,
     Plugins

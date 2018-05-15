@@ -1,34 +1,33 @@
 <template>
-  <div id="inputContainer">
-  	<div class='input-column'>
-		<h3>Plugin Settings</h3>
-		<div class='checkbox-container'>
-			<label>Conferencing (requires https)</label>
-			<input v-model="conferencePlugin"
-			  @change="update" @keyup="update"
-			  type='checkbox'
-			/>
-		</div>
+    <div id="inputContainer">
+        <div class='input-column'>
+            <h3>Plugin Settings</h3>
+            <div class='checkbox-container'>
+                <label for="conferencing-plugin">Conferencing (requires https)</label>
+                <input id="conferencing-plugin" v-model="conferencePlugin"
+                    @change="update" @keyup="update"
+                    type='checkbox'
+                />
+            </div>
 
-		<div class='checkbox-container'>
-			<label>File Uploader</label>
-			  <input v-model="fileuploader"
-  			  @change="update" @keyup="update"
-  			  type='checkbox'
-  		  	/>
-		</div>
+            <div class='checkbox-container'>
+                <label for="file-uploader">File Uploader</label>
+                <input id="file-uploader" v-model="fileuploader"
+                    @change="update" @keyup="update"
+                    type='checkbox'
+                />
+            </div>
 
-		<div class='checkbox-container'>
-			<label>Starry Plugin</label>
-			<input v-model="starryPlugin"
-			  @change="update" @keyup="update"
-			  type='checkbox'
-			  name = 'starryPlugin'
-			/>
-		</div>
-
-	</div>
-  </div>
+            <div class='checkbox-container'>
+                <label for="starry-plugin">Starry Plugin</label>
+                <input id="starry-plugin" v-model="starryPlugin"
+                    @change="update" @keyup="update"
+                    type='checkbox'
+                    name = 'starryPlugin'
+                />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -49,15 +48,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-#inputContainer{
-  margin:10px;
-  line-height:2.5em;
-}
-.label{
-  width:210px;
-  text-align:right;
-  display: inline-block;
-}
-</style>

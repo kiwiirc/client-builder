@@ -1,12 +1,12 @@
 <template>
   <div id="inputContainer">
-  	<div class='input-column'>
-	<h3>Theme Selection </h3>
-    <select v-model="localData.config.theme" @change="update">
-      <option value = "Default">Default</option>
-      <option selected value = "Dark">Dark</option>
-    </select>
-	</div>
+    <div class='input-column'>
+      <h3>Theme Selection </h3>
+      <select v-model="localData.config.theme" @change="update">
+        <option value = "Default">Default</option>
+        <option selected value = "Dark">Dark</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -21,14 +21,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-select{
-  font-size:1.25em;
-  text-align: center;
-}
-#inputContainer{
-  margin:10px;
-  line-height:2.5em;
-}
-</style>
