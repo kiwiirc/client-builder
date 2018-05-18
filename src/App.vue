@@ -121,7 +121,10 @@ export default {
     },
     doConfig: async function () {
       let url = '/clientconfig'
-      let data = { settings: JSON.stringify(window.currentConfig) }
+      let config = JSON.parse(JSON.stringify(window.currentConfig))
+      config.warnOnExit = true
+      config.startupOptions.state_key = true
+      let data = { settings: JSON.stringify(config) }
       let res = await Api.instance().call(url).post(data).json()
       this.settingsID = res.settings_id
       let el = document.getElementById('previewFrame')
@@ -133,9 +136,6 @@ export default {
     },
     download: function () {
       let HTML = '<!DOCTYPE html><html><head><style>body{margin:0}iframe{width:100%;height:100vh;border:0;display:block}</style></head>'
-      this.localData.config.warnOnExit = true
-      this.localData.config.startupOptions.state_key = true
-      let conf = encodeURIComponent(JSON.stringify(this.localData.config))
       HTML += '<body><iframe src="' + this.kiwiInstanceURL + '?settings=' + this.settingsID + '"></iframe></body></html>'
       let el = document.createElement('a')
       el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(HTML))
