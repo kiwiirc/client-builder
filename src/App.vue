@@ -123,7 +123,6 @@ export default {
       let url = '/clientconfig'
       let config = JSON.parse(JSON.stringify(window.currentConfig))
       config.warnOnExit = true
-      config.startupOptions.state_key = true
       let data = { settings: JSON.stringify(config) }
       let res = await Api.instance().call(url).post(data).json()
       this.settingsID = res.settings_id
