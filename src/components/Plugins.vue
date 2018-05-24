@@ -34,6 +34,13 @@
 export default {
   name: 'Plugins',
   props: ['localData'],
+  data () {
+    return {
+      conferencePlugin: false,
+      fileuploader: false,
+      starryPlugin: false
+    }
+  },
   methods: {
     update: function () {
       this.localData.config.plugins = []

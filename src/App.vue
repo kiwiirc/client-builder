@@ -93,7 +93,7 @@ var data = new Vue({
   data: function () {
     return {
       config: window.currentConfig,
-      baseURL: 'https://cantelope.ml'
+      baseURL: 'https://kiwiirc.com'
     }
   }
 })
@@ -110,7 +110,7 @@ export default {
   data: function () {
     return {
       localData: data,
-      kiwiInstanceURL: data.baseURL + '/Darren/kiwiirc/dist/index.php', // must be absolute
+      kiwiInstanceURL: data.baseURL + '/nextclient',
       changeThrottleTimer: 0
     }
   },
