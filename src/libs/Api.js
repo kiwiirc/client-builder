@@ -7,9 +7,10 @@ export default class Api {
     }
 
     constructor() {
-        this.endpoint = 'https://cantelope.ml/Darren/website-accountsbackend.bak/public';
+        this.username = window.kiwiuser.username;
+        this.endpoint = window.kiwiuser.api_endpoint;
         // this.endpoint = 'http://kiwiirc.vm';
-        this.token = 'NPv9UzIq4Qkh0jXcBJ07o8u8g3rxV8pidKbqrJtC1neaYACFN3ui9XqVeaZH4xsS';
+        this.token = window.kiwiuser.token;
     }
 
     fetch(path, _headers, _method, _data) {

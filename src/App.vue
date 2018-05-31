@@ -20,6 +20,10 @@
       <v-tab title="Plugins">
         <Plugins :localData="localData" v-on:setConfig="setConfig"></Plugins>
       </v-tab>
+
+      <v-tab title="Export">
+        <Export :localData="localData"></Export>
+      </v-tab>
     </vue-tabs>
     <div class="preview">
         <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
@@ -41,6 +45,7 @@ import NetworkSettings from './components/NetworkSettings.vue'
 import StartupScreen from './components/StartupScreen.vue'
 import MessageView from './components/MessageView.vue'
 import Plugins from './components/Plugins.vue'
+import Export from './components/Export.vue'
 Vue.use(VueTabs)
 
 window.currentConfig = {
@@ -93,7 +98,9 @@ var data = new Vue({
   data: function () {
     return {
       config: window.currentConfig,
-      baseURL: 'https://kiwiirc.com'
+      HTML: '',
+      iframe: '',
+      iframeSnippet: ''
     }
   }
 })
@@ -105,12 +112,13 @@ export default {
     NetworkSettings,
     StartupScreen,
     MessageView,
-    Plugins
+    Plugins,
+    Export
   },
   data: function () {
     return {
       localData: data,
-      kiwiInstanceURL: data.baseURL + '/nextclient',
+      kiwiInstanceURL: window.kiwiuser.kiwi_instance,
       changeThrottleTimer: 0
     }
   },
@@ -119,6 +127,10 @@ export default {
       let d = new Date()
       setTimeout(this.doConfig, Math.max(0, this.changeThrottleTimer - d.getTime()))
     },
+    createSnippets (id) {
+      this.localData.iframeSnippet = `<iframe src="${this.kiwiInstanceURL}?settings=${id}" style="width:100%;height:100vh;border:0;display:block"></iframe>`
+      this.localData.HTML = `<!DOCTYPE html><html><head><style>body{margin:0}</style></head><body>${this.localData.iframeSnippet}</body></html>`
+    },
     doConfig: async function () {
       let url = '/clientconfig'
       let config = JSON.parse(JSON.stringify(window.currentConfig))
@@ -126,18 +138,17 @@ export default {
       let data = { settings: JSON.stringify(config) }
       let res = await Api.instance().call(url).post(data).json()
       this.settingsID = res.settings_id
-      let el = document.getElementById('previewFrame')
-      if (el) {
+      this.localData.iframe = document.getElementById('previewFrame')
+      if (this.localData.iframe) {
         let d = new Date()
         this.changeThrottleTimer = d.getTime() + 2000
-        el.src = this.kiwiInstanceURL + '?settings=' + this.settingsID
+        this.localData.iframe.src = this.kiwiInstanceURL + '?settings=' + this.settingsID
+        this.createSnippets(this.settingsID)
       }
     },
     download: function () {
-      let HTML = '<!DOCTYPE html><html><head><style>body{margin:0}iframe{width:100%;height:100vh;border:0;display:block}</style></head>'
-      HTML += '<body><iframe src="' + this.kiwiInstanceURL + '?settings=' + this.settingsID + '"></iframe></body></html>'
       let el = document.createElement('a')
-      el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(HTML))
+      el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.localData.HTML))
       el.setAttribute('download', 'KiwiClient.html')
       el.style.display = 'none'
       document.body.appendChild(el)
@@ -149,6 +160,11 @@ export default {
   },
   mounted: function () {
     this.doConfig()
+  },
+  watch: {
+    settingsID (val) {
+      this.createSnippets(val)
+    }
   }
 }
 
