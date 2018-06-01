@@ -3,7 +3,7 @@
         <div class='input-column'>
             <h3>Plugin Settings</h3>
             <div class='checkbox-container'>
-                <label for="conferencing-plugin">Conferencing (requires https)</label>
+                <label for="conferencing-plugin">Conferencing<br>(requires https)</label>
                 <input id="conferencing-plugin" v-model="conferencePlugin"
                     @change="update" @keyup="update"
                     type='checkbox'

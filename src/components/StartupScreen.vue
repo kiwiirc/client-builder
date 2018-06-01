@@ -87,31 +87,6 @@
                 />
             </div>
 
-            <div class='input-column'>
-                <h3> Direct Options </h3>
-                <label for="customServer-direct-path">Direct Path</label>
-                <input id="customServer-direct-path" v-model="localData.config.startupOptions.directPath"
-                    @change="update" @keyup="update"
-                    type='text'
-                />
-
-                <div class='checkbox-container'>
-                    <label for="customServer-direct">Direct</label>
-                    <input id="customServer-direct" v-model="localData.config.startupOptions.direct"
-                        @change="update" @keyup="update"
-                        type='checkbox'
-                    />
-                </div>
-            </div>
-
-            <div class='input-column'>
-                <h3>&nbsp;</h3>
-                <label for="customServer-gecos">gecos</label>
-                <input id="customServer-gecos" v-model="localData.config.startupOptions.gecos"
-                    @change="update" @keyup="update"
-                    type='text'
-                />
-            </div>
         </div>
 
         <div v-else-if="localData.config.startupScreen == 'znc'">

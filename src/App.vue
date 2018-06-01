@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <vue-tabs class="tabs" v-model="tabName">
-      <v-tab title="Network Settings">
-        <NetworkSettings :localData="localData" v-on:setConfig="setConfig"></NetworkSettings>
-      </v-tab>
-
       <v-tab title="Startup Screen">
         <StartupScreen :localData="localData" v-on:setConfig="setConfig"></StartupScreen>
+      </v-tab>
+
+      <v-tab title="Network Settings">
+        <NetworkSettings :localData="localData" v-on:setConfig="setConfig"></NetworkSettings>
       </v-tab>
 
       <v-tab title="Message View">
@@ -21,16 +21,12 @@
         <Plugins :localData="localData" v-on:setConfig="setConfig"></Plugins>
       </v-tab>
 
-      <v-tab title="Export">
-        <Export :localData="localData"></Export>
+      <v-tab title="Save">
+        <Save :localData="localData"></Save>
       </v-tab>
     </vue-tabs>
-    <div class="preview" :class="{hidden: tabName === 'Export'}">
+    <div class="preview" :class="{hidden: tabName === 'Save'}">
         <iframe id="previewFrame"></iframe>
-    </div>
-    <div id="header">
-        <button class="FinishButton" @click="download">Export HTML</button>
-        <span class="headerText">Kiwi Client Builder Tool</span>
     </div>
   </div>
 </template>
@@ -45,16 +41,16 @@ import NetworkSettings from './components/NetworkSettings.vue'
 import StartupScreen from './components/StartupScreen.vue'
 import MessageView from './components/MessageView.vue'
 import Plugins from './components/Plugins.vue'
-import Export from './components/Export.vue'
+import Save from './components/Save.vue'
 Vue.use(VueTabs)
 
 window.currentConfig = {
   'windowTitle': 'Kiwi IRC - The web IRC client',
   'startupScreen': 'welcome',
-  'networkType': 'default',
   'kiwiServer': 'https://localdev.clients.kiwiirc.com/webirc/kiwiirc/',
   'restricted': true,
   'theme': 'Dark',
+  'messageLayout': 'compact',
   'themes': [
     { 'name': 'Default', 'url': './static/themes/default' },
     { 'name': 'Dark', 'url': './static/themes/dark' }
@@ -81,16 +77,17 @@ window.currentConfig = {
     'gecos': '',
     'state_key': false
   },
+  'buffers': {
+    'show_emoticons': true,
+    'extraFormatting': false,
+    'privateMessages': true,
+    'showJoinsParts': true
+  },
   'embedly': {
     'key': ''
   },
   'plugins': [
   ],
-  'compactView': false,
-  'emojis': true,
-  'extraFormatting': false,
-  'privateMessages': true,
-  'showJoinsParts': true,
   'warnOnExit': false
 }
 
@@ -100,7 +97,8 @@ var data = new Vue({
       config: window.currentConfig,
       HTML: '',
       iframe: '',
-      iframeSnippet: ''
+      iframeSnippet: '',
+      networkType: 'default'
     }
   }
 })
@@ -113,7 +111,7 @@ export default {
     StartupScreen,
     MessageView,
     Plugins,
-    Export
+    Save
   },
   data: function () {
     return {
@@ -146,17 +144,6 @@ export default {
         this.localData.iframe.src = `${this.kiwiInstanceURL}?settings=${this.settingsID}`
         this.createSnippets(this.settingsID)
       }
-    },
-    download: function () {
-      let el = document.createElement('a')
-      el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.localData.HTML))
-      el.setAttribute('download', 'KiwiClient.html')
-      el.style.display = 'none'
-      document.body.appendChild(el)
-      el.click()
-      document.body.removeChild(el)
-      this.localData.config.warnOnExit = false
-      this.localData.config.startupOptions.state_key = false
     }
   },
   mounted: function () {
@@ -165,9 +152,6 @@ export default {
   watch: {
     settingsID (val) {
       this.createSnippets(val)
-    },
-    tabName (val) {
-      console.log(val)
     }
   }
 }
@@ -177,5 +161,8 @@ export default {
 <style scoped>
 .hidden{
   display:none;
+}
+#t-Save{
+  margin-left: 100px;
 }
 </style>

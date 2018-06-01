@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'Export',
+  name: 'Save',
   props: ['localData'],
   methods: {
     update: function () {
