@@ -162,7 +162,7 @@ export default {
 .hidden{
   display:none;
 }
-#t-Save{
-  margin-left: 100px;
+>>> .nav-tabs .tab:last-child{
+    margin-left: 2em;
 }
 </style>
