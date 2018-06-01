@@ -2,11 +2,11 @@
   <div>
     <h4>Embedding your client</h4>
     <p>Embed your custom Kiwi IRC client into your own website. On your contact page or next to a video stream - it can fit anywhere.</p>
-    Preview URL:
-    <textarea disabled spellcheck="false" v-model="localData.iframe.src" id="settings-link"></textarea>
+    Preview URL: <button @click="copy('iframeLink')" class="noBorder">📋 Copy</button>
+    <div class="snippet" id="iframeLink"><a :href="localData.iframe.src" target="_blank">{{localData.iframe.src}}</a></div>
     <hr>
-    Embed HTML:
-    <textarea disabled spellcheck="false" v-model="localData.iframeSnippet" id="settings-link"></textarea>
+    Embed HTML: <button @click="copy('iframeEmbed')" class="noBorder">📋 Copy</button>
+    <div class="snippet" id="iframeEmbed">{{localData.iframeSnippet}}</div>
   </div>
 </template>
 
@@ -17,22 +17,32 @@ export default {
   methods: {
     update: function () {
       this.$emit('setConfig', 1)
+    },
+    copy (containerid) {
+      var textarea = document.createElement('textarea')
+      textarea.id = 'temp_element'
+      textarea.style.height = 0
+      document.body.appendChild(textarea)
+      textarea.value = document.getElementById(containerid).innerText
+      var selector = document.querySelector('#temp_element')
+      selector.select()
+      document.execCommand('copy')
+      document.body.removeChild(textarea)
     }
   }
 }
 </script>
 
 <style scoped>
-textarea {
-  width: 100%;
-  height: 100px;
+.snippet {
+  width: 50%;
   margin: 0;
   font-size: 1.2em;
   padding: 20px;
   line-height: normal;
-  background-color: #f5f5f5;
+  background-color: #dedede;
 }
-#settings-link{
-  margin-bottom:20px;
+.noBorder{
+  border: none;
 }
 </style>

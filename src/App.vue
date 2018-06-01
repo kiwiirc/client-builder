@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <vue-tabs class="tabs">
+    <vue-tabs class="tabs" v-model="tabName">
       <v-tab title="Network Settings">
         <NetworkSettings :localData="localData" v-on:setConfig="setConfig"></NetworkSettings>
       </v-tab>
@@ -25,8 +25,8 @@
         <Export :localData="localData"></Export>
       </v-tab>
     </vue-tabs>
-    <div class="preview">
-        <iframe src='../../kiwiirc/dist' id="previewFrame"></iframe>
+    <div class="preview" :class="{hidden: tabName === 'Export'}">
+        <iframe id="previewFrame"></iframe>
     </div>
     <div id="header">
         <button class="FinishButton" @click="download">Export HTML</button>
@@ -119,7 +119,8 @@ export default {
     return {
       localData: data,
       kiwiInstanceURL: window.kiwiuser.kiwi_instance,
-      changeThrottleTimer: 0
+      changeThrottleTimer: 0,
+      tabName: ''
     }
   },
   methods: {
@@ -142,7 +143,7 @@ export default {
       if (this.localData.iframe) {
         let d = new Date()
         this.changeThrottleTimer = d.getTime() + 2000
-        this.localData.iframe.src = this.kiwiInstanceURL + '?settings=' + this.settingsID
+        this.localData.iframe.src = `${this.kiwiInstanceURL}?settings=${this.settingsID}`
         this.createSnippets(this.settingsID)
       }
     },
@@ -164,8 +165,17 @@ export default {
   watch: {
     settingsID (val) {
       this.createSnippets(val)
+    },
+    tabName (val) {
+      console.log(val)
     }
   }
 }
 
 </script>
+
+<style scoped>
+.hidden{
+  display:none;
+}
+</style>
