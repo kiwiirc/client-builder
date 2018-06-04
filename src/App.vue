@@ -5,11 +5,11 @@
         <StartupScreen :localData="localData" v-on:setConfig="setConfig"></StartupScreen>
       </v-tab>
 
-      <v-tab title="Network Settings">
+      <v-tab title="IRC Network">
         <NetworkSettings :localData="localData" v-on:setConfig="setConfig"></NetworkSettings>
       </v-tab>
 
-      <v-tab title="Message View">
+      <v-tab title="Messages">
         <MessageView :localData="localData" v-on:setConfig="setConfig"></MessageView>
       </v-tab>
 
@@ -49,7 +49,7 @@ window.currentConfig = {
   'startupScreen': 'welcome',
   'kiwiServer': 'https://localdev.clients.kiwiirc.com/webirc/kiwiirc/',
   'restricted': true,
-  'theme': 'Dark',
+  'theme': 'Default',
   'messageLayout': 'compact',
   'themes': [
     { 'name': 'Default', 'url': './static/themes/default' },
@@ -72,7 +72,7 @@ window.currentConfig = {
     'showPassword': true,
     'autoConnect': false,
     'recaptcha': false,
-    'encoding': '',
+    'encoding': 'utf8',
     'directPath': '',
     'gecos': '',
     'state_key': false

@@ -54,7 +54,7 @@
                 />
             </div>
 
-            <div class='input-column'>
+            <div v-if="showDirectOptions" class='input-column'>
                 <h3>Direct Options</h3>
                 <label for="custom-gecos">gecos</label>
                 <input id="custom-gecos" v-model="localData.config.startupOptions.gecos"
@@ -238,6 +238,11 @@
 export default {
   name: 'NetworkSettings',
   props: ['localData'],
+  data() {
+    return {
+        showDirectOptions: false,
+    };
+  },
   methods: {
     update: function () {
       this.$emit('setConfig', 1)

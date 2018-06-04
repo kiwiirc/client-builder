@@ -1,8 +1,8 @@
 <template>
     <div id="inputContainer">
         <div class="input-column">
-            <h3>Screen Selection</h3>
-            <label for="screen-to-edit">Screen To Edit: </label>
+            <h3>Startup Screen</h3>
+            <label for="screen-to-edit"> </label>
             <select id="screen-to-edit" v-model="localData.config.startupScreen" @change="update">
                 <option value = "welcome">Welcome Screen</option>
                 <option value = "customServer">Custom Server</option>
@@ -12,14 +12,14 @@
 
         <div v-if="localData.config.startupScreen == 'welcome'">
             <div class="input-column">
-                <h3>Custom content section</h3>
-                <label for="welcome-greeting">Greeting Text </label>
+                <h3>Custom content</h3>
+                <label for="welcome-greeting">Title</label>
                 <input id="welcome-greeting" v-model="localData.config.startupOptions.greetingText"
                     @change="update" @keyup="update"
                     type='text'
                 />
 
-                <label for="welcome-button">Button Text</label>
+                <label for="welcome-button">Connect button</label>
                 <input id="welcome-button" v-model="localData.config.startupOptions.buttonText"
                     @change="update" @keyup="update"
                     type='text'
@@ -28,7 +28,7 @@
 
             <div class='input-column'>
                 <h3>&nbsp;</h3>
-                <label for="welcome-info">Info Content</label>
+                <label for="welcome-info">Extra information</label>
                 <input id="welcome-info" v-model="localData.config.startupOptions.infoContent"
                     @change="update" @keyup="update"
                     type='text'
@@ -38,7 +38,7 @@
             <div class="input-column">
                 <h3>Login Options </h3>
                 <div class="checkbox-container">
-                    <label for="welcome-show-channel">Show Channel</label>
+                    <label for="welcome-show-channel">Show channel</label>
                     <input id="welcome-show-channel" v-model="localData.config.startupOptions.showChannel"
                         @change="update" @keyup="update"
                         type='checkbox'
@@ -46,7 +46,7 @@
                 </div>
 
                 <div class="checkbox-container">
-                    <label for="welcome-show-nick">Show Nick</label>
+                    <label for="welcome-show-nick">Show nick</label>
                     <input id="welcome-show-nick" v-model="localData.config.startupOptions.showNick"
                         @change="update" @keyup="update"
                         type='checkbox'
@@ -54,7 +54,7 @@
                 </div>
 
                 <div class="checkbox-container">
-                    <label for="welcome-show-password">Show Password</label>
+                    <label for="welcome-show-password">Show password</label>
                     <input id="welcome-show-password" v-model="localData.config.startupOptions.showPassword"
                         @change="update" @keyup="update"
                         type='checkbox'
@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="checkbox-container">
-                    <label for="welcome-recaptcha">Recaptcha</label>
+                    <label for="welcome-recaptcha">Use recaptcha</label>
                     <input id="welcome-recaptcha" v-model="localData.config.startupOptions.recaptcha"
                         @change="update" @keyup="update"
                         type='checkbox'
@@ -73,14 +73,14 @@
 
         <div v-else-if="localData.config.startupScreen == 'customServer'">
             <div class='input-column'>
-                <h3>Custom content section </h3>
-                <label for="customServer-button">Button Text</label>
+                <h3>Custom content</h3>
+                <label for="customServer-button">Connect button</label>
                 <input id="customServer-button" v-model="localData.config.startupOptions.buttonText"
                     @change="update" @keyup="update"
                     type='text'
                 />
 
-                <label for="customServer-button">Greeting Text</label>
+                <label for="customServer-button">Title</label>
                 <input id="customServer-button" v-model="localData.config.startupOptions.greetingText"
                     @change="update" @keyup="update"
                     type='text'
@@ -91,14 +91,14 @@
 
         <div v-else-if="localData.config.startupScreen == 'znc'">
             <div class='input-column'>
-                <h3>Custom content section</h3>
-                <label for="znc-greeting">Greeting Text</label>
+                <h3>Custom content</h3>
+                <label for="znc-greeting">Ttitle</label>
                 <input id="znc-greeting" v-model="localData.config.startupOptions.greetingText"
                     @change="update" @keyup="update"
                     type='text'
                 />
 
-                <label for="znc-button-text">Button Text</label>
+                <label for="znc-button-text">Connect button</label>
                 <input id="znc-button-text" v-model="localData.config.startupOptions.buttonText"
                     @change="update" @keyup="update"
                     type='text'
@@ -107,7 +107,7 @@
 
             <div class="input-column">
                 <h3>&nbsp;</h3>
-                <label for="znc-info-content">Info Content</label>
+                <label for="znc-info-content">Extra information</label>
                 <input id="znc-info-content" v-model="localData.config.startupOptions.infoContent"
                     @change="update" @keyup="update"
                     type='text'
