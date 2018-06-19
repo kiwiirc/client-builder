@@ -3,8 +3,6 @@
         <div class="input-column">
 
         <h3>Messages</h3>
-
-        <div class="checkbox-container">
             <label for="layout-select">
                 Layout
             </label>
@@ -12,8 +10,6 @@
                 <option value="compact">Compact</option>
                 <option value="modern">Modern</option>
             </select>
-        </div>
-
         </div>
         <div class="input-column">
         <h3>&nbsp;</h3>
