@@ -1,9 +1,4 @@
 // This stylesheet is specific to the Kiwi Client Builder only.
-body {
-    margin: 0;
-    padding: 0;
-}
-
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -12,26 +7,26 @@ body {
 }
 
 #header{
-    float: right;
-    text-align:right;
-    color: #ffc;
-    background: #f7f7f7;
-    height:50px;
-    width: 100%;
-    padding: 0 20px;
-    font-family: 'Roboto', sans-serif;
+  float: right;
+  text-align:right;
+  color: #ffc;
+  background: #f7f7f7;
+  height:50px;
+  width: 100%;
+  padding: 0 20px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .headerText{
-    font-size:30px;
-    margin-left:30px;
-    color: #5f5f5f;
-    font-size: 1em;
-    line-height: 51px;
+  font-size:30px;
+  margin-left:30px;
+  color: #5f5f5f;
+  font-size: 1em;
+  line-height: 51px;
 }
 
 #header .FinishButton {
-    float: right;
+	float: right;
     border: 2px solid #53cea6;
     color: #53cea6;
     text-align: center;
@@ -49,128 +44,210 @@ body {
 }
 
 #header .FinishButton:hover {
-    background: #53cea6;
-    color: #fff;
-    text-decoration: underline;
+	background: #53cea6;
+	color: #fff;
+	text-decoration: underline;
 }
 
 .nav-tabs-navigation {
-    background: #cacaca;
+	background: #cacaca;
 }
 
 .tabs{
-    float:left;
-    width: 100%;
-    text-align:left;
-    background: #f7f7f7;
+	float:left;
+	width: 100%;
+	text-align:left;
+	background: #f7f7f7;
 }
 
 .tab-content {
-    float: left;
-    width: 100%;
-    padding: 20px;
+	float: left;
+	width: 100%;
 }
 
 .vue-tabs .nav-tabs{
-    border-bottom: none !important;
+	border-bottom: none !important;
 }
 
 .vue-tabs .nav-tabs > li > a,
 .vue-tabs .nav-tabs > li > a:hover,
 .vue-tabs .nav-tabs > li > a:focus {
-    color: #000 !important;
-    background-color: #fff !important;
-    opacity: 0.8 !important;
+	color: #000 !important;
+	background-color: #fff !important;
+	opacity: 0.8 !important;
+    border-bottom: none;
+}
+
+.vue-tabs .nav-tabs > li:hover {
+    border-bottom: none;
 }
 
 .vue-tabs .nav-tabs > li > a:hover,
 .vue-tabs .nav-tabs > li > a:focus {
-    opacity: 1 !important;
+	opacity: 1 !important;
 }
 
 .vue-tabs .nav-tabs > li > a:hover {
-    border-bottom: none !important;
+	border-bottom: none !important;
 }
 
 
 .vue-tabs .nav-tabs li.active a,
 .vue-tabs .nav-tabs > li.active > a:hover,
 .vue-tabs .nav-tabs > li.active > a:focus {
-    background-color: #fff !important;
-    color: #53cea6 !important;
-    font-weight: 600 !important;
-    opacity: 1 !important;
+	background-color: #fff !important;
+	color: #53cea6 !important;
+	font-weight: 600 !important;
+	opacity: 1 !important;
+}
+
+iframe {
+    border: none;
+    background: #fff;
 }
 
 .preview{
-    padding: 0;
-    height: 100%;
-    float:left;
-    text-align:justify;
-    background:#F5F5ED;
-    width: 100%;
+  padding: 0;
+  height: 100%;
+  float:left;
+  text-align:justify;
+  background:#F5F5ED;
+  width: 100%;
 }
-
 .FinishButton{
-    margin:10px;
-    width:220px;
-    background:#6e8;
-    border-radius:5px;
-    font-size:30px;
-    top: 0;
+  margin:10px;
+  width:220px;
+  background:#6e8;
+  border-radius:5px;
+  font-size:30px;
+  top: 0;
 }
-
 #previewFrame{
-    width:100%;
-    height: calc(100vh - 90px);
-    display:block;
+  width:100%;
+  height: calc(100vh - 90px);
+  display:block;
 }
 
 .tabs {
-    font-family: 'Roboto', sans-serif;
+	font-family: 'Roboto', sans-serif;
 }
 
 .tabs .input-column {
-    float: left;
-    width: auto;
-    box-sizing: border-box;
-    padding: 0 20px;
-    margin-bottom: 20px;
+	float: left;
+	width: 25%;
+	box-sizing: border-box;
+	padding: 0 20px;
+	margin-bottom: 20px;
 }
 
 .tabs .input-column.full {
-    width: 100%;
+	width: 100%;
 }
 
-label {
-    float: left;
-    clear: both;
-    line-height: normal;
-    text-align: left;
-    margin-bottom: 5px;
-    font-weight: 400;
-    color: #5f5f5f;
-    font-size: 1em;
+.tabs .input-column label {
+	clear: both;
+	line-height: normal;
+	text-align: left;
+	margin-bottom: 5px;
+	font-weight: 400;
+	color: #5f5f5f;
+    display: block;
+    width: 100%;
+	font-size: 0.8em;
 }
 
 .tabs h3 {
-    float: left;
-    clear: both;
-    margin: 0 0 10px 0;
-    line-height: normal;
-    color: #5f5f5f;
-    font-size: 1.2em;
-    cursor: default;
+	float: left;
+	clear: both;
+	margin: 0 0 10px 0;
+	line-height: normal;
+	color: #5f5f5f;
+	font-size: 1em;
+	cursor: default;
+}
+
+.tabs .input-column input[type="text"],
+.tabs .input-column select,
+.tabs .input-column textarea,
+.tabs .input-column input[type="password"] {
+	float: left;
+	height: 40px;
+	padding: 0 10px;
+	border: none;
+	width: 200px;
+	background: #fff;
+	border-bottom: 1px solid #53cea6;
+	line-height: 40px;
+	font-size: 0.8em;
+	color: #2a2c23;
+	clear: both;
+	margin-bottom: 10px;
+}
+
+.tabs .input-column select {
+	border: 1px solid #53cea6;
+	cursor: pointer;
+	border-radius: 4px;
+	margin-bottom: 4px;
+	width: 214px;
+}
+
+
+/* Style all form inputs */
+.tabs .input-column input[type='checkbox'] {
+    float: right;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    position: relative;
+	border: 1px solid #666;
+    cursor: pointer;
+    margin-left: 0;
+    margin-right: 0;
+	background: #fff;
+	transition: all 0.3s;
+}
+
+.tabs .input-column input[type='checkbox']::after {
+    position: absolute;
+    content: '';
+    left: 2px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    z-index: 10;
+    transition: all 0.3s;
+    opacity: 0;
+	border-radius: 2px;
+	background: #53cea6;
+}
+
+.tabs .input-column input[type='checkbox']:checked {
+	border: 1px solid #53cea6;
+}
+
+.tabs .input-column input[type='checkbox']:checked::after {
+    position: absolute;
+    opacity: 1;
+	background: #53cea6;
+}
+
+.tabs .input-column input[type='checkbox']:focus {
+	outline: none;
 }
 
 .tabs .input-column .checkbox-container {
-    float: left;
-    clear: both;
-    margin-bottom: 10px;
+	float: left;
+	clear: both;
+	margin-bottom: 10px;
+    width: 100%;
 }
 
 .tabs .input-column .checkbox-container label {
-    width: 200px;
-    margin-bottom: 0;
-    line-height: 20px;
+	width: auto;
+	margin-bottom: 0;
+    display: inline-block;
+	line-height: 20px;
 }
