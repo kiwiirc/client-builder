@@ -5,13 +5,13 @@
         <h3>Messages</h3>
 
         <div class="checkbox-container">
-            <label>
+            <label for="layout-select">
                 Layout
-                <select v-model="localData.config.messageLayout" @change="update">
-                    <option value="compact">Compact</option>
-                    <option value="modern">Modern</option>
-                </select>
             </label>
+            <select id="layout-select" v-model="localData.config.messageLayout" @change="update">
+                <option value="compact">Compact</option>
+                <option value="modern">Modern</option>
+            </select>
         </div>
 
         </div>
