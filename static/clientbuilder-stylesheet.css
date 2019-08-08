@@ -125,12 +125,14 @@ iframe {
 }
 #previewFrame{
   width:100%;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 340px);
+  border-bottom: 1px solid black;
   display:block;
 }
 
 .tabs {
-	font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
+  max-height: 340px;
 }
 
 .tabs .input-column {
