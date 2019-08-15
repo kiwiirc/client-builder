@@ -39,7 +39,7 @@
                 <label for="extra-formatting">Basic markdown</label>
                 <input
                     id="extra-formatting"
-                    v-model="localData.config.buffers.extraFormatting"
+                    v-model="localData.config.buffers.extra_formatting"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >
@@ -48,7 +48,7 @@
                 <label for="private-messages">Block private messages</label>
                 <input
                     id="private-messages"
-                    v-model="localData.config.buffers.block_pms"
+                    v-model="localData.config.buffers.block_private"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >
@@ -57,7 +57,7 @@
                 <label for="show-join-show-parts">Show join / parts</label>
                 <input
                     id="show-join-show-parts"
-                    v-model="localData.config.buffers.showJoinParts"
+                    v-model="localData.config.buffers.show_joinparts"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >

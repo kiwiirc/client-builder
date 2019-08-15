@@ -57,11 +57,31 @@ window.currentConfig = {
     'kiwiServer': 'http://10.0.0.16:8081/webirc/kiwiirc/',
     'restricted': true,
     'theme': 'Default',
-    'messageLayout': 'compact',
-    'themes': [
-        { 'name': 'Default', 'url': './static/themes/default' },
-        { 'name': 'Dark', 'url': './static/themes/dark' },
-    ],
+    'themes': [{
+        'name': 'Default',
+        'url': '/static/themes/default/',
+    }, {
+        'name': 'Dark',
+        'url': '/static/themes/dark/',
+    }, {
+        'name': 'Nightswatch',
+        'url': '/static/themes/nightswatch/',
+    }, {
+        'name': 'Radioactive',
+        'url': '/static/themes/radioactive/',
+    }, {
+        'name': 'Osprey',
+        'url': '/static/themes/osprey/',
+    }, {
+        'name': 'Sky',
+        'url': '/static/themes/sky/',
+    }, {
+        'name': 'Coffee',
+        'url': '/static/themes/coffee/',
+    }, {
+        'name': 'custom',
+        'url': '/static/themes/default/',
+    }],
     'startupOptions': {
         'server': 'irc.freenode.net',
         'port': 6667,
@@ -85,10 +105,12 @@ window.currentConfig = {
         'state_key': false,
     },
     'buffers': {
+        'messageLayout': 'modern',
         'show_emoticons': true,
-        'extraFormatting': false,
-        'privateMessages': true,
-        'showJoinsParts': true,
+        'extra_formatting': true,
+        'block_private': false,
+        'show_joinparts': true,
+        'show_timestamps': true,
     },
     'embedly': {
         'key': '',
@@ -104,7 +126,7 @@ let data = new Vue({
             config: window.currentConfig,
             show_advanced: false,
             HTML: '',
-            iframe: '',
+            iframe: null,
             iframeSnippet: '',
             networkType: 'default',
         };
@@ -135,14 +157,28 @@ export default {
         settingsID(val) {
             this.createSnippets(val);
         },
+        tabName(val) {
+            if (!this.localData.iframe) {
+                return;
+            }
+            let ifr = this.localData.iframe;
+
+            if (val === 'Startup Screen' || val === 'IRC Network') {
+                ifr.contentWindow.postMessage({
+                    'showStartup': true,
+                }, this.kiwiInstanceURL);
+            } else {
+                ifr.contentWindow.postMessage({
+                    'showStartup': false,
+                }, this.kiwiInstanceURL);
+            }
+        },
     },
     mounted() {
         this.preview();
     },
     methods: {
         setConfig() {
-            // let d = new Date();
-            // setTimeout(this.preview, Math.max(0, this.changeThrottleTimer - d.getTime()));
             this.preview();
         },
         createSnippets(id) {
@@ -166,14 +202,16 @@ export default {
             let config = JSON.parse(JSON.stringify(window.currentConfig));
             config.warnOnExit = true;
             let ifr = document.getElementById('previewFrame');
-            this.localData.iframe = ifr;
             if (ifr) {
                 let d = new Date();
                 this.changeThrottleTimer = d.getTime() + 2000;
                 if (!ifr.src) {
-                    ifr.onload = () => ifr.contentWindow.postMessage({
-                        'previewConfig': config,
-                    }, this.kiwiInstanceURL);
+                    ifr.onload = () => {
+                        ifr.contentWindow.postMessage({
+                            'previewConfig': config,
+                        }, this.kiwiInstanceURL);
+                        this.localData.iframe = ifr;
+                    };
                     ifr.src = `${this.kiwiInstanceURL}?settings_preview=1`;
                 } else {
                     ifr.contentWindow.postMessage({
