@@ -70,8 +70,6 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
     console.log("live preview plugin loaded", kiwi, state);
     let vueInstance = kiwi.Vue;
     if (getQueryVariable('settings_preview')) {
-        // Listen for messages from parent window about config changes
-        //state.$nextTick(e => {
         setTimeout(() => {
             console.log("startup", document.querySelector('.kiwi-startup-common').__vue__);
 
@@ -102,9 +100,9 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
             });
             buffer.joined = true;
             state.setActiveBuffer(net.id, buffer.name);
-            //document.querySelector('body>div.kiwi-wrap').__vue__.hasStarted = true;
         }, 200);
         let startupOptsCheck = null;
+        // Listen for messages from parent window about config changes
         window.addEventListener('message', (event) => {
             console.log(event);
             if (!startupOptsCheck && event.data.previewConfig) {
@@ -122,10 +120,12 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
                         state.setting('buffers.messageLayout', configObj.buffers.messageLayout);
                     }
                     applyConfig(configObj);
-                    kiwi.state.getActiveBuffer().messagesObj.messages.forEach((m) => { m.html = null; m.id++; });
+                    kiwi.state.getActiveBuffer()
+                        .messagesObj
+                        .messages.forEach((m) => { m.html = null; });
                 } else if (vueInstance) {
                     // Destroy & recreate the root component to reload the app with new config
-                startupOptsCheck = { ...configObj.startupOptions };
+                    startupOptsCheck = { ...configObj.startupOptions };
 
                     applyConfig(configObj);
                     vueInstance = document.querySelector('body>div.kiwi-wrap').__vue__;
