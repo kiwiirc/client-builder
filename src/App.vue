@@ -196,7 +196,9 @@ export default {
             let res = await Api.instance().call(url).post(postData).json();
             this.settingsID = res.settings_id;
             this.createSnippets(this.settingsID);
-            this.customInstanceUrl = this.kiwiInstanceURL + '?settings=' + this.settingsID;
+            let instanceURL = new URL(this.kiwiInstanceURL);
+            instanceURL.searchParams.set('settings', this.settingsID);
+            this.customInstanceUrl = instanceURL.toString();
         },
         async preview() {
             let config = JSON.parse(JSON.stringify(window.currentConfig));
@@ -212,7 +214,9 @@ export default {
                         }, this.kiwiInstanceURL);
                         this.localData.iframe = ifr;
                     };
-                    ifr.src = `${this.kiwiInstanceURL}?settings_preview=1`;
+                    let instanceURL = new URL(this.kiwiInstanceURL);
+                    instanceURL.searchParams.set('settings_preview', 1);
+                    ifr.src = instanceURL.toString();
                 } else {
                     ifr.contentWindow.postMessage({
                         'previewConfig': config,
