@@ -4,10 +4,12 @@
 /* eslint-disable no-extend-native */
 /* eslint-disable no-underscore-dangle */
 import isEqual from 'lodash/isEqual';
+import each from 'lodash/each';
 import MockTransport from './mock.transport';
 
 const _ = {
     isEqual,
+    each,
 };
 
 let Misc;
@@ -67,39 +69,43 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
     state.networks = [];
 
     Vue = kiwi.Vue;
+
+    const fakeConnect = () => {
+        state.networks.forEach(n => state.removeNetwork(n.id));
+        let net = state.addNetwork('Network', 'demo', {
+            server: 'irc.example.com',
+            port: 6667,
+            tls: false,
+            password: '',
+            encoding: 'utf8',
+            direct: false,
+        });
+
+        net.ircClient.connect({
+            server: 'irc.example.com',
+            port: 6667,
+            tls: false,
+            password: '',
+            encoding: 'utf8',
+            direct: false,
+            transport: MockTransport,
+        });
+        net.ircClient.emit('connected');
+        let buffer = state.addBuffer(net.id, '#example');
+        state.addMessage(buffer, {
+            message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at fermentum mi. Morbi id augue ac magna aliquam pretium. Phasellus erat lacus, facilisis eu velit non, tempor eleifend lectus.',
+            nick: 'demo',
+            time: Date.now(),
+        });
+        buffer.joined = true;
+        state.setActiveBuffer(net.id, buffer.name);
+    };
     console.log("live preview plugin loaded", kiwi, state);
     let vueInstance = kiwi.Vue;
     if (getQueryVariable('settings_preview')) {
         setTimeout(() => {
             console.log("startup", document.querySelector('.kiwi-startup-common').__vue__);
-
-            let net = state.addNetwork('Network', 'demo', {
-                server: 'irc.example.com',
-                port: 6667,
-                tls: false,
-                password: '',
-                encoding: 'utf8',
-                direct: false,
-            });
-
-            net.ircClient.connect({
-                server: 'irc.example.com',
-                port: 6667,
-                tls: false,
-                password: '',
-                encoding: 'utf8',
-                direct: false,
-                transport: MockTransport,
-            });
-            net.ircClient.emit('connected');
-            let buffer = state.addBuffer(net.id, '#example');
-            state.addMessage(buffer, {
-                message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at fermentum mi. Morbi id augue ac magna aliquam pretium. Phasellus erat lacus, facilisis eu velit non, tempor eleifend lectus.',
-                nick: 'demo',
-                time: Date.now(),
-            });
-            buffer.joined = true;
-            state.setActiveBuffer(net.id, buffer.name);
+            fakeConnect();
         }, 200);
         let startupOptsCheck = null;
         // Listen for messages from parent window about config changes
@@ -137,6 +143,7 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
                         render: h => h(App),
                         i18n: i18,
                     });
+                    vueInstance.$nextTick(() => fakeConnect());
                 }
             } else if (event.data.showStartup != null) {
                 document.querySelector('body>div.kiwi-wrap').__vue__.hasStarted = !event.data.showStartup;

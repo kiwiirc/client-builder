@@ -48,7 +48,7 @@
                 <label for="private-messages">Block private messages</label>
                 <input
                     id="private-messages"
-                    v-model="localData.config.buffers.block_private"
+                    v-model="localData.config.buffers.block_pms"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >
@@ -71,7 +71,7 @@
                     @change="update" @keyup="update"
                 >
             </div>
-            <div v-if="localData.show_advanced">
+            <div v-if="1||localData.show_advanced">
                 <div class="checkbox-container">
                     <label for="buffers--show_hostnames">Show hostnames</label>
                     <input

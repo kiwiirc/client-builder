@@ -108,7 +108,7 @@ window.currentConfig = {
         'messageLayout': 'modern',
         'show_emoticons': true,
         'extra_formatting': true,
-        'block_private': false,
+        'block_pms': false,
         'show_joinparts': true,
         'show_timestamps': true,
     },
@@ -182,7 +182,7 @@ export default {
             this.preview();
         },
         createSnippets(id) {
-            this.localData.iframeSnippet = `<iframe src="${this.kiwiInstanceURL}?settings=${id}" style="width:100%;height:100vh;border:0;display:block"></iframe>`;
+            this.localData.iframeSnippet = `<iframe src="${this.kiwiInstanceURL}?settings=${id}" style="width:100%;height:680px;border:0;display:block"></iframe>`;
             this.localData.HTML = `<!DOCTYPE html><html><head><style>body{margin:0}</style></head><body>${this.localData.iframeSnippet}</body></html>`;
         },
         async save() {
@@ -231,5 +231,10 @@ export default {
     }
     .nav-tabs .tab:last-child {
         margin-left: 2em;
+    }
+    .tabs {
+        overflow-y: scroll;
+        height: 277px;
+        max-height: 277px;
     }
 </style>
