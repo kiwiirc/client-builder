@@ -1,14 +1,14 @@
 <template>
     <div>
         <h4>Embedding your client</h4>
-        <div v-if="settingsID">
+        <div v-if="settingsId">
             <p>
                 Embed your custom Kiwi IRC client into your own website.
                 On your contact page or next to a video stream - it can fit anywhere.
             </p>
             Preview URL: <button class="noBorder" @click="copy('iframeLink')">📋 Copy</button>
             <div id="iframeLink" class="snippet">
-                <a :href="customInstanceURL" target="_blank">{{ customInstanceURL }}</a>
+                <a :href="customInstanceUrl" target="_blank">{{ customInstanceUrl }}</a>
             </div>
             <hr>
             Embed HTML: <button class="noBorder" @click="copy('iframeEmbed')">📋 Copy</button>
@@ -23,7 +23,7 @@
 <script>
 export default {
     name: 'Save',
-    props: ['localData', 'customInstanceURL', 'settingsID'],
+    props: ['localData', 'customInstanceUrl', 'settingsId'],
     methods: {
         save() {
             this.$emit('save');

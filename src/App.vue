@@ -23,7 +23,7 @@
 
             <v-tab title="Save">
                 <Save
-                    :settings-id="settingsID"
+                    :settings-id="settingsId"
                     :custom-instance-url="customInstanceUrl"
                     :local-data="localData"
                     @save="save"
@@ -150,13 +150,10 @@ export default {
             customInstanceUrl: null,
             changeThrottleTimer: 0,
             tabName: '',
-            settingsID: null,
+            settingsId: null,
         };
     },
     watch: {
-        settingsID(val) {
-            this.createSnippets(val);
-        },
         tabName(val) {
             if (!this.localData.iframe) {
                 return;
@@ -187,17 +184,17 @@ export default {
         },
         async save() {
             let url = '/clientconfig';
-            if (this.settingsID) {
-                url += '/' + this.settingsID;
+            if (this.settingsId) {
+                url += '/' + this.settingsId;
             }
             let config = JSON.parse(JSON.stringify(window.currentConfig));
             config.warnOnExit = true;
             let postData = { settings: JSON.stringify(config) };
             let res = await Api.instance().call(url).post(postData).json();
-            this.settingsID = res.settings_id;
-            this.createSnippets(this.settingsID);
+            this.settingsId = res.settings_id;
+            this.createSnippets(this.settingsId);
             let instanceURL = new URL(this.kiwiInstanceURL);
-            instanceURL.searchParams.set('settings', this.settingsID);
+            instanceURL.searchParams.set('settings', this.settingsId);
             this.customInstanceUrl = instanceURL.toString();
         },
         async preview() {
