@@ -65,6 +65,7 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
 
     state = kiwi.state;
     state.settings.startupOptions.state_key = false;
+    state.settings.startupOptions.nick_format = '[^\x00-\xff]';
     state.user_settings = {};
     state.networks = [];
 
