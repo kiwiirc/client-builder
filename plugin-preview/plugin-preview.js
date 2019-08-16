@@ -64,13 +64,19 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
     const App = kiwi.require('components/App');
 
     state = kiwi.state;
+
+    // Remove the state_key so that any user_settings they might have are ignored.
     state.settings.startupOptions.state_key = false;
+
+    // Disable the connect button by requiring an impossible nickname.
     state.settings.startupOptions.nick_format = '[^\x00-\xff]';
+
     state.user_settings = {};
     state.networks = [];
 
     Vue = kiwi.Vue;
 
+    // Add some dummy networks/buffers/data.
     const fakeConnect = () => {
         state.networks.forEach(n => state.removeNetwork(n.id));
         let net = state.addNetwork('Network', 'demo', {
@@ -92,6 +98,7 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
             transport: MockTransport,
         });
         net.ircClient.emit('connected');
+
         let buffer = state.addBuffer(net.id, '#example');
         state.addMessage(buffer, {
             message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean at fermentum mi. Morbi id augue ac magna aliquam pretium. Phasellus erat lacus, facilisis eu velit non, tempor eleifend lectus.',
@@ -101,20 +108,19 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
         buffer.joined = true;
         state.setActiveBuffer(net.id, buffer.name);
     };
-    console.log("live preview plugin loaded", kiwi, state);
+
     let vueInstance = kiwi.Vue;
     if (getQueryVariable('settings_preview')) {
         setTimeout(() => {
-            console.log("startup", document.querySelector('.kiwi-startup-common').__vue__);
             fakeConnect();
         }, 200);
         let startupOptsCheck = null;
         // Listen for messages from parent window about config changes
         window.addEventListener('message', (event) => {
-            console.log(event);
             if (!startupOptsCheck && event.data.previewConfig) {
                 startupOptsCheck = { ...event.data.previewConfig.startupOptions };
             }
+
             if (event.data.previewConfig) {
                 let configObj = event.data.previewConfig;
                 if (_.isEqual(startupOptsCheck, configObj.startupOptions)
@@ -123,18 +129,21 @@ kiwi.plugin('previewPlugin', async(kiwi, log) => { /* eslint-disable-line no-und
                     if (configObj.theme !== state.setting('theme')) {
                         kiwi.themes.setTheme(configObj.theme);
                     }
-                    if (configObj.buffers.messageLayout) {
+                    /*if (configObj.buffers.messageLayout) {
                         state.setting('buffers.messageLayout', configObj.buffers.messageLayout);
-                    }
+                    }*/
                     applyConfig(configObj);
+
+                    // Remove the cached .html of messages so they get regenerated on render
                     kiwi.state.getActiveBuffer()
                         .messagesObj
                         .messages.forEach((m) => { m.html = null; });
                 } else if (vueInstance) {
-                    // Destroy & recreate the root component to reload the app with new config
                     startupOptsCheck = { ...configObj.startupOptions };
 
                     applyConfig(configObj);
+
+                    // Destroy & recreate the root component to reload the app and apply new startupOptions
                     vueInstance = document.querySelector('body>div.kiwi-wrap').__vue__;
                     vueInstance.$destroy();
                     document.body.innerHTML = '<div id="app"></div>';
