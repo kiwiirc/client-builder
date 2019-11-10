@@ -1,15 +1,5 @@
 <template>
     <div id="inputContainer">
-        <div class="input-column">
-            <h3>Startup Screen</h3>
-            <label for="screen-to-edit" />
-            <select id="screen-to-edit" v-model="localData.config.startupScreen" @change="update">
-                <option value = "welcome">Welcome Screen</option>
-                <option value = "customServer">Custom Server</option>
-                <option value = "znc">ZNC</option>
-            </select>
-        </div>
-
         <div v-if="localData.config.startupScreen == 'welcome'">
             <div class="input-column">
                 <h3>Custom content</h3>
@@ -91,65 +81,6 @@
                 </div>
             </div>
         </div>
-
-        <div v-else-if="localData.config.startupScreen == 'customServer'">
-            <div class="input-column">
-                <h3>Custom content</h3>
-                <label for="customServer-button">Connect button</label>
-                <input
-                    id="customServer-button"
-                    v-model="localData.config.startupOptions.buttonText"
-                    type="text"
-                    @change="update"
-                    @keyup="update"
-                >
-
-                <label for="customServer-button">Title</label>
-                <input
-                    id="customServer-button"
-                    v-model="localData.config.startupOptions.greetingText"
-                    type="text"
-                    @change="update"
-                    @keyup="update"
-                >
-            </div>
-
-        </div>
-
-        <div v-else-if="localData.config.startupScreen == 'znc'">
-            <div class="input-column">
-                <h3>Custom content</h3>
-                <label for="znc-greeting">Title</label>
-                <input
-                    id="znc-greeting"
-                    v-model="localData.config.startupOptions.greetingText"
-                    type="text"
-                    @change="update"
-                    @keyup="update"
-                >
-
-                <label for="znc-button-text">Connect button</label>
-                <input
-                    id="znc-button-text"
-                    v-model="localData.config.startupOptions.buttonText"
-                    type="text"
-                    @change="update"
-                    @keyup="update"
-                >
-            </div>
-
-            <div class="input-column">
-                <h3>&nbsp;</h3>
-                <label for="znc-info-content">Extra information</label>
-                <input
-                    id="znc-info-content"
-                    v-model="localData.config.startupOptions.infoContent"
-                    type="text"
-                    @change="update"
-                    @keyup="update"
-                >
-            </div>
-        </div>
     <!--
     <div v-for="field in ZNCfields" :key="field">
     <label><div class="label">{{field.name}}</div>
@@ -166,7 +97,7 @@ export default {
     props: ['localData'],
     methods: {
         update() {
-            this.$emit('setConfig', 1);
+            this.$emit('setConfig', { reload: true });
         },
     },
 };

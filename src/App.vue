@@ -1,46 +1,55 @@
 <template>
     <div id="app">
-        <vue-tabs v-model="tabName" class="tabs">
-            <v-tab title="Startup Screen">
+        <tabbed-view v-if="previewReady" @changed="tabChanged">
+            <tabbed-tab header="Startup Screen">
                 <StartupScreen :local-data="localData" @setConfig="setConfig"/>
-            </v-tab>
+            </tabbed-tab>
 
-            <v-tab title="IRC Network">
+            <tabbed-tab header="IRC Network">
                 <NetworkSettings :local-data="localData" @setConfig="setConfig"/>
-            </v-tab>
+            </tabbed-tab>
 
-            <v-tab title="Messages">
+            <tabbed-tab header="Messages">
                 <MessageView :local-data="localData" @setConfig="setConfig"/>
-            </v-tab>
+            </tabbed-tab>
 
-            <v-tab title="Theme">
+            <tabbed-tab header="Theme">
                 <Theme :local-data="localData" @setConfig="setConfig"/>
-            </v-tab>
+            </tabbed-tab>
 
-            <v-tab title="Plugins">
+            <tabbed-tab header="Plugins">
                 <Plugins :local-data="localData" @setConfig="setConfig"/>
-            </v-tab>
+            </tabbed-tab>
 
-            <v-tab title="Save">
+            <tabbed-tab header="Save">
                 <Save
                     :settings-id="settingsId"
                     :custom-instance-url="customInstanceUrl"
                     :local-data="localData"
                     @save="save"
                 />
-            </v-tab>
-        </vue-tabs>
+            </tabbed-tab>
+        </tabbed-view>
+
         <div :class="{hidden: tabName === 'Save'}" class="preview">
-            <iframe id="previewFrame" />
+            <iframe
+                id="previewFrame"
+                :ref="'previewFrame'"
+                :src="kiwiInstanceURL"
+                @load="previewLoaded"
+            />
         </div>
     </div>
 </template>
 
 <script>
 import Api from '@/libs/Api';
-import VueTabs from 'vue-nav-tabs';
-import 'vue-nav-tabs/themes/vue-tabs.css';
+// import VueTabs from 'vue-natabbed-tabs';
+// import 'vue-natabbed-tabs/themes/vue-tabs.css';
+import TabbedView from './components/tabs';
 import Vue from 'vue';
+import KiwiController from './libs/KiwiController';
+import extractStructure from './libs/extractStructure';
 import Theme from './components/Theme.vue';
 import NetworkSettings from './components/NetworkSettings.vue';
 import StartupScreen from './components/StartupScreen.vue';
@@ -48,82 +57,13 @@ import MessageView from './components/MessageView.vue';
 import Plugins from './components/Plugins.vue';
 import Save from './components/Save.vue';
 
-Vue.use(VueTabs);
-
-/* eslint-disable quote-props */
-window.currentConfig = {
-    'windowTitle': 'Kiwi IRC - The web IRC client',
-    'startupScreen': 'welcome',
-    'kiwiServer': 'http://10.0.0.16:8081/webirc/kiwiirc/',
-    'restricted': true,
-    'theme': 'Default',
-    'themes': [{
-        'name': 'Default',
-        'url': '/static/themes/default/',
-    }, {
-        'name': 'Dark',
-        'url': '/static/themes/dark/',
-    }, {
-        'name': 'Nightswatch',
-        'url': '/static/themes/nightswatch/',
-    }, {
-        'name': 'Radioactive',
-        'url': '/static/themes/radioactive/',
-    }, {
-        'name': 'Osprey',
-        'url': '/static/themes/osprey/',
-    }, {
-        'name': 'Sky',
-        'url': '/static/themes/sky/',
-    }, {
-        'name': 'Coffee',
-        'url': '/static/themes/coffee/',
-    }, {
-        'name': 'custom',
-        'url': '/static/themes/default/',
-    }],
-    'startupOptions': {
-        'server': 'irc.freenode.net',
-        'port': 6667,
-        'tls': false,
-        'direct': false,
-        'channel': '#kiwiirc-default',
-        'nick': 'kiwi-n?',
-        'password': '',
-        'greetingText': 'Welcome to KiwiIRC!',
-        'infoContent': 'Have a nice day!',
-        'buttonText': 'Connect...',
-        'showChannel': true,
-        'showNick': true,
-        'showUser': true,
-        'showPassword': true,
-        'autoConnect': false,
-        'recaptcha': false,
-        'encoding': 'utf8',
-        'directPath': '',
-        'gecos': '',
-        'state_key': false,
-    },
-    'buffers': {
-        'messageLayout': 'modern',
-        'show_emoticons': true,
-        'extra_formatting': true,
-        'block_pms': false,
-        'show_joinparts': true,
-        'show_timestamps': true,
-    },
-    'embedly': {
-        'key': '',
-    },
-    'plugins': [
-    ],
-    'warnOnExit': false,
-};
+// Vue.use(VueTabs);
 
 let data = new Vue({
     data() {
         return {
-            config: window.currentConfig,
+            config: {},
+            savableConfig: window.kiwiuser.savableConfig,
             show_advanced: false,
             HTML: '',
             iframe: null,
@@ -142,6 +82,7 @@ export default {
         MessageView,
         Plugins,
         Save,
+        TabbedView,
     },
     data() {
         return {
@@ -151,45 +92,51 @@ export default {
             changeThrottleTimer: 0,
             tabName: '',
             settingsId: null,
+            previewReady: false,
         };
     },
     watch: {
         tabName(val) {
-            if (!this.localData.iframe) {
-                return;
-            }
-            let ifr = this.localData.iframe;
-
             if (val === 'Startup Screen' || val === 'IRC Network') {
-                ifr.contentWindow.postMessage({
-                    'showStartup': true,
-                }, this.kiwiInstanceURL);
+                this.kiwi.showStartup(true);
             } else {
-                ifr.contentWindow.postMessage({
-                    'showStartup': false,
-                }, this.kiwiInstanceURL);
+                this.kiwi.showStartup(false);
             }
         },
     },
-    mounted() {
-        this.preview();
+    created() {
+        this.kiwi = new KiwiController();
+        // Just for debugging
+        window.app = this;
     },
     methods: {
-        setConfig() {
-            this.preview();
+        tabChanged(tab) {
+            this.tabName = tab.header;
+        },
+        setConfig(opts) {
+            if (opts && opts.reload) {
+                this.kiwi.reloadKiwiUi();
+            } else {
+                // Just in case any of the change settings effect message, uncache all existing ones
+                this.kiwi.uncacheMessages();
+
+                this.kiwi.kiwi.themes.setTheme(this.localData.config.theme);
+            }
         },
         createSnippets(id) {
             this.localData.iframeSnippet = `<iframe src="${this.kiwiInstanceURL}?settings=${id}" style="width:100%;height:680px;border:0;display:block"></iframe>`;
             this.localData.HTML = `<!DOCTYPE html><html><head><style>body{margin:0}</style></head><body>${this.localData.iframeSnippet}</body></html>`;
         },
         async save() {
-            let url = '/clientconfig';
+            let url = '/save';
             if (this.settingsId) {
-                url += '/' + this.settingsId;
+                url += '?' + this.settingsId;
             }
-            let config = JSON.parse(JSON.stringify(window.currentConfig));
-            config.warnOnExit = true;
-            let postData = { settings: JSON.stringify(config) };
+
+            // Just get the aprts of the confif we're interested in
+            let config = extractStructure(this.localData.config, this.localData.savableConfig);
+            let postData = { config: JSON.stringify(config) };
+
             let res = await Api.instance().call(url).post(postData).json();
             this.settingsId = res.settings_id;
             this.createSnippets(this.settingsId);
@@ -197,45 +144,53 @@ export default {
             instanceURL.searchParams.set('settings', this.settingsId);
             this.customInstanceUrl = instanceURL.toString();
         },
-        async preview() {
-            let config = JSON.parse(JSON.stringify(window.currentConfig));
-            config.warnOnExit = true;
-            let ifr = document.getElementById('previewFrame');
-            if (ifr) {
-                let d = new Date();
-                this.changeThrottleTimer = d.getTime() + 2000;
-                if (!ifr.src) {
-                    ifr.onload = () => {
-                        ifr.contentWindow.postMessage({
-                            'previewConfig': config,
-                        }, this.kiwiInstanceURL);
-                        this.localData.iframe = ifr;
-                    };
-                    let instanceURL = new URL(this.kiwiInstanceURL);
-                    instanceURL.searchParams.set('settings_preview', 1);
-                    ifr.src = instanceURL.toString();
-                } else {
-                    ifr.contentWindow.postMessage({
-                        'previewConfig': config,
-                    }, this.kiwiInstanceURL);
-                }
+        previewLoaded() {
+            // only do this once
+            if (this.previewReady) {
+                return;
             }
+
+            // iframe loaded but its possible kiwi hasnt loaded in it yet
+            let c = () => {
+                let win = this.$refs.previewFrame.contentWindow;
+                if (!win || !win.kiwi || !win.kiwi.state.settings) {
+                    setTimeout(c, 20);
+                    return;
+                }
+
+                this.kiwi.setKiwiWindow(win);
+                this.localData.config = win.kiwi.state.settings;
+                this.previewReady = true;
+
+                setTimeout(() => {
+                    this.kiwi.fakeConnect();
+                }, 200);
+            };
+
+            c();
         },
     },
 };
 
 </script>
 
-<style scoped>
+<style>
     .hidden {
         display:none;
     }
-    .nav-tabs .tab:last-child {
+    .tabs {
+        margin-bottom: 0;
+    }
+    .tabs li:last-child {
         margin-left: 2em;
     }
-    .tabs {
-        overflow-y: scroll;
-        height: 277px;
-        max-height: 277px;
+    ul.tabs a {
+        cursor: pointer;
+    }
+    .u-tabbed-content {
+        padding-top: 1em;
+        border-bottom: 3px solid #eaeaea;
+        overflow-y: auto;
+        background: #efefef;
     }
 </style>

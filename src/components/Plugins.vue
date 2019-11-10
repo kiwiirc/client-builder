@@ -23,18 +23,6 @@
                     @keyup="update"
                 >
             </div>
-
-            <div class="checkbox-container">
-                <label for="starry-plugin">Starry Plugin</label>
-                <input
-                    id="starry-plugin"
-                    v-model="starryPlugin"
-                    type="checkbox"
-                    name="starryPlugin"
-                    @change="update"
-                    @keyup="update"
-                >
-            </div>
         </div>
     </div>
 </template>
@@ -47,7 +35,6 @@ export default {
         return {
             conferencePlugin: false,
             fileuploader: false,
-            starryPlugin: false,
         };
     },
     methods: {
@@ -56,23 +43,13 @@ export default {
             if (this.conferencePlugin) {
                 this.localData.config.plugins.push({
                     name: 'conference',
-                    url: './static/plugins/plugin-conference/dist/main.js',
-                });
-            }
-            if (this.starryPlugin) {
-                this.localData.config.plugins.push({
-                    name: 'starry',
-                    url: './static/plugins/plugin-starry/dist/main.js',
+                    url: '/nextplugins/conference.js',
                 });
             }
             if (this.fileuploader) {
-                this.localData.config.fileuploader = {
-                    server: this.localData.baseURL + '/files',
-                    maxFileSize: 10485760,
-                };
                 this.localData.config.plugins.push({
                     name: 'fileuploader',
-                    url: './static/plugins/fileuploader-kiwiirc-plugin/dist/main.js',
+                    url: '/nextplugins/fileuploader.js',
                 });
             }
             this.$emit('setConfig', 1);

@@ -53,6 +53,9 @@
                     @change="update" @keyup="update"
                 >
             </div>
+        </div>
+        <div class="input-column">
+            <h3>&nbsp;</h3>
             <div class="checkbox-container">
                 <label for="show-join-show-parts">Show join / parts</label>
                 <input
@@ -71,7 +74,7 @@
                     @change="update" @keyup="update"
                 >
             </div>
-            <div v-if="1||localData.show_advanced">
+            <div v-if="localData.show_advanced">
                 <div class="checkbox-container">
                     <label for="buffers--show_hostnames">Show hostnames</label>
                     <input

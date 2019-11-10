@@ -1,9 +1,6 @@
-// This stylesheet is specific to the Kiwi Client Builder only.
+/* This stylesheet is specific to the Kiwi Client Builder only. */
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  min-width: 940px;
 }
 
 #header{
@@ -50,56 +47,12 @@
 }
 
 .nav-tabs-navigation {
-	background: #cacaca;
-}
-
-.tabs{
-	float:left;
-	width: 100%;
-	text-align:left;
-	background: #f7f7f7;
 }
 
 .tab-content {
 	float: left;
-	width: 100%;
-    padding-top: 20px;
-}
-
-.vue-tabs .nav-tabs{
-	border-bottom: none !important;
-}
-
-.vue-tabs .nav-tabs > li > a,
-.vue-tabs .nav-tabs > li > a:hover,
-.vue-tabs .nav-tabs > li > a:focus {
-	color: #000 !important;
-	background-color: #fff !important;
-	opacity: 0.8 !important;
-    border-bottom: none;
-}
-
-.vue-tabs .nav-tabs > li:hover {
-    border-bottom: none;
-}
-
-.vue-tabs .nav-tabs > li > a:hover,
-.vue-tabs .nav-tabs > li > a:focus {
-	opacity: 1 !important;
-}
-
-.vue-tabs .nav-tabs > li > a:hover {
-	border-bottom: none !important;
-}
-
-
-.vue-tabs .nav-tabs li.active a,
-.vue-tabs .nav-tabs > li.active > a:hover,
-.vue-tabs .nav-tabs > li.active > a:focus {
-	background-color: #fff !important;
-	color: #53cea6 !important;
-	font-weight: 600 !important;
-	opacity: 1 !important;
+  padding-top: 20px;
+  background: #f7f7f7;
 }
 
 iframe {
@@ -108,12 +61,7 @@ iframe {
 }
 
 .preview{
-  padding: 0;
-  height: 100%;
-  float:left;
-  text-align:justify;
   background:#F5F5ED;
-  width: 100%;
 }
 .FinishButton{
   margin:10px;
@@ -130,12 +78,7 @@ iframe {
   display:block;
 }
 
-.tabs {
-  font-family: 'Roboto', sans-serif;
-  max-height: 340px;
-}
-
-.tabs .input-column {
+.input-column {
 	float: left;
 	width: 25%;
 	box-sizing: border-box;
@@ -143,11 +86,11 @@ iframe {
 	margin-bottom: 20px;
 }
 
-.tabs .input-column.full {
+.input-column.full {
 	width: 100%;
 }
 
-.tabs .input-column label {
+.input-column label {
 	clear: both;
 	line-height: normal;
 	text-align: left;
@@ -159,7 +102,7 @@ iframe {
 	font-size: 1em;
 }
 
-.tabs h3 {
+h3 {
 	float: left;
 	clear: both;
 	margin: 0 0 10px 0;
@@ -169,10 +112,10 @@ iframe {
 	cursor: default;
 }
 
-.tabs .input-column input[type="text"],
-.tabs .input-column select,
-.tabs .input-column textarea,
-.tabs .input-column input[type="password"] {
+.input-column input[type="text"],
+.input-column select,
+.input-column textarea,
+.input-column input[type="password"] {
 	float: left;
 	height: 40px;
 	padding: 0 10px;
@@ -181,13 +124,12 @@ iframe {
 	background: #fff;
 	border-bottom: 1px solid #53cea6;
 	line-height: 40px;
-	font-size: 0.8em;
 	color: #2a2c23;
 	clear: both;
 	margin-bottom: 10px;
 }
 
-.tabs .input-column select {
+.input-column select {
 	border: 1px solid #53cea6;
 	cursor: pointer;
 	border-radius: 4px;
@@ -197,7 +139,7 @@ iframe {
 
 
 /* Style all form inputs */
-.tabs .input-column input[type='checkbox'] {
+.input-column input[type='checkbox'] {
     float: right;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -208,12 +150,17 @@ iframe {
 	border: 1px solid #666;
     cursor: pointer;
     margin-left: 0;
-    margin-right: 0;
+    margin-right: 30px;
 	background: #fff;
 	transition: all 0.3s;
 }
+@media(max-width: 1200px) {
+  .input-column input[type='checkbox'] {
+    margin-right: 0;
+  }
+}
 
-.tabs .input-column input[type='checkbox']::after {
+.input-column input[type='checkbox']::after {
     position: absolute;
     content: '';
     left: 2px;
@@ -227,28 +174,28 @@ iframe {
 	background: #53cea6;
 }
 
-.tabs .input-column input[type='checkbox']:checked {
+.input-column input[type='checkbox']:checked {
 	border: 1px solid #53cea6;
 }
 
-.tabs .input-column input[type='checkbox']:checked::after {
+.input-column input[type='checkbox']:checked::after {
     position: absolute;
     opacity: 1;
 	background: #53cea6;
 }
 
-.tabs .input-column input[type='checkbox']:focus {
+.input-column input[type='checkbox']:focus {
 	outline: none;
 }
 
-.tabs .input-column .checkbox-container {
+.input-column .checkbox-container {
 	float: left;
 	clear: both;
 	margin-bottom: 10px;
     width: 100%;
 }
 
-.tabs .input-column .checkbox-container label {
+.input-column .checkbox-container label {
 	width: auto;
 	margin-bottom: 0;
     display: inline-block;
