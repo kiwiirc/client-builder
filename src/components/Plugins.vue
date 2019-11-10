@@ -8,8 +8,6 @@
                     id="conferencing-plugin"
                     v-model="conferencePlugin"
                     type="checkbox"
-                    @change="update"
-                    @keyup="update"
                 >
             </div>
 
@@ -17,10 +15,8 @@
                 <label for="file-uploader">File uploader</label>
                 <input
                     id="file-uploader"
-                    v-model="fileuploader"
+                    v-model="fileuploaderPlugin"
                     type="checkbox"
-                    @change="update"
-                    @keyup="update"
                 >
             </div>
         </div>
@@ -28,30 +24,51 @@
 </template>
 
 <script>
+
+function computedPluginProperty(name, url) {
+    return {
+        get() {
+            return this.hasPlugin(name);
+        },
+        set(newVal) {
+            if (newVal) {
+                this.addPlugin(name, url);
+            } else {
+                this.removePlugin(name);
+            }
+        },
+    };
+}
+
 export default {
     name: 'Plugins',
     props: ['localData'],
     data() {
-        return {
-            conferencePlugin: false,
-            fileuploader: false,
-        };
+        return { };
+    },
+    computed: {
+        conferencePlugin: computedPluginProperty('conference', '/nextplugins/conference.js'),
+        fileuploaderPlugin: computedPluginProperty('fileuploader', '/nextplugins/fileuploader.js'),
     },
     methods: {
+        hasPlugin(name) {
+            let plugins = this.localData.config.plugins;
+            return !!plugins.find(p => p.name === name);
+        },
+        addPlugin(name, url) {
+            let plugins = this.localData.config.plugins;
+            if (!plugins.find(p => p.name === name)) {
+                plugins.push({ name, url });
+            }
+        },
+        removePlugin(name) {
+            let plugins = this.localData.config.plugins;
+            let idx = plugins.findIndex(p => p.name === name);
+            if (idx > -1) {
+                plugins.splice(idx, 1);
+            }
+        },
         update() {
-            this.localData.config.plugins = [];
-            if (this.conferencePlugin) {
-                this.localData.config.plugins.push({
-                    name: 'conference',
-                    url: '/nextplugins/conference.js',
-                });
-            }
-            if (this.fileuploader) {
-                this.localData.config.plugins.push({
-                    name: 'fileuploader',
-                    url: '/nextplugins/fileuploader.js',
-                });
-            }
             this.$emit('setConfig', 1);
         },
     },
