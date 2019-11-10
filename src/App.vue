@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <tabbed-view v-if="previewReady" @changed="tabChanged">
-            <tabbed-tab header="Startup Screen">
+            <tabbed-tab :focus="true" header="Startup Screen">
                 <StartupScreen :local-data="localData" @setConfig="setConfig"/>
             </tabbed-tab>
 
@@ -68,6 +68,7 @@ let data = new Vue({
             HTML: '',
             iframe: null,
             iframeSnippet: '',
+            saving: false,
             networkType: 'default',
         };
     },
@@ -137,12 +138,14 @@ export default {
             let config = extractStructure(this.localData.config, this.localData.savableConfig);
             let postData = { config: JSON.stringify(config) };
 
+            this.localData.saving = true;
             let res = await Api.instance().call(url).post(postData).json();
             this.settingsId = res.settings_id;
             this.createSnippets(this.settingsId);
             let instanceURL = new URL(this.kiwiInstanceURL);
             instanceURL.searchParams.set('settings', this.settingsId);
             this.customInstanceUrl = instanceURL.toString();
+            this.localData.saving = false;
         },
         previewLoaded() {
             // only do this once
@@ -178,7 +181,7 @@ export default {
     .hidden {
         display:none;
     }
-    .tabs {
+    ul.tabs {
         margin-bottom: 0;
     }
     .tabs li:last-child {

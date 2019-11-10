@@ -1,21 +1,26 @@
 <template>
-    <div>
-        <h4>Embedding your client</h4>
-        <div v-if="settingsId">
-            <p>
-                Embed your custom Kiwi IRC client into your own website.
-                On your contact page or next to a video stream - it can fit anywhere.
-            </p>
-            Preview URL: <button class="noBorder" @click="copy('iframeLink')">📋 Copy</button>
+    <div style="padding: 0 1em;">
+        <h4>Save your custom client</h4>
+
+        <p>
+            <button v-if="!localData.saving" @click="save()">Generate HTML and links</button>
+            <span v-else>Saving...</span>
+        </p>
+
+        <div v-if="settingsId && !localData.saving" class="snippets">
+            <hr>
+
+            A link to your custom client. Share it on your website or send it over an email. <br>
+            <button @click="copy('iframeLink')">📋 Copy</button>
             <div id="iframeLink" class="snippet">
                 <a :href="customInstanceUrl" target="_blank">{{ customInstanceUrl }}</a>
             </div>
+
             <hr>
-            Embed HTML: <button class="noBorder" @click="copy('iframeEmbed')">📋 Copy</button>
+
+            iframe HTML. Embed it on your website, wordpress or blog. <br>
+            <button @click="copy('iframeEmbed')">📋 Copy</button>
             <div id="iframeEmbed" class="snippet">{{ localData.iframeSnippet }}</div>
-        </div>
-        <div v-else>
-            <button class="noBorder" @click="save()">Create custom instance</button>
         </div>
     </div>
 </template>
@@ -47,15 +52,19 @@ export default {
 </script>
 
 <style scoped>
+.snippets {
+    margin-top: 21px;
+}
+.snippets > button {
+    margin-top: 5px;
+}
 .snippet {
     width: 50%;
     margin: 0;
     font-size: 1.2em;
     padding: 20px;
+    margin-top: 10px;
     line-height: normal;
     background-color: #dedede;
-}
-.noBorder{
-    border: none;
 }
 </style>
