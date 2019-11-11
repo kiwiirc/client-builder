@@ -20,7 +20,7 @@
 
             iframe HTML. Embed it on your website, wordpress or blog. <br>
             <button @click="copy('iframeEmbed')">📋 Copy</button>
-            <div id="iframeEmbed" class="snippet">{{ localData.iframeSnippet }}</div>
+            <div id="iframeEmbed" class="snippet">{{ iframeSnippet }}</div>
         </div>
     </div>
 </template>
@@ -29,6 +29,11 @@
 export default {
     name: 'Save',
     props: ['localData', 'customInstanceUrl', 'settingsId'],
+    computed: {
+        iframeSnippet() {
+            return `<iframe src="${this.customInstanceUrl}">style="width:100%;height:680px;border:0;display:block"></iframe>`;
+        },
+    },
     methods: {
         save() {
             this.$emit('save');
