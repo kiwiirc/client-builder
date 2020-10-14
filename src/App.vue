@@ -44,12 +44,10 @@
 
 <script>
 import Api from '@/libs/Api';
-// import VueTabs from 'vue-natabbed-tabs';
-// import 'vue-natabbed-tabs/themes/vue-tabs.css';
-import TabbedView from './components/tabs';
 import Vue from 'vue';
 import KiwiController from './libs/KiwiController';
 import extractStructure from './libs/extractStructure';
+import TabbedView from './components/Tabs.vue';
 import Theme from './components/Theme.vue';
 import NetworkSettings from './components/NetworkSettings.vue';
 import StartupScreen from './components/StartupScreen.vue';
@@ -57,9 +55,7 @@ import MessageView from './components/MessageView.vue';
 import Plugins from './components/Plugins.vue';
 import Save from './components/Save.vue';
 
-// Vue.use(VueTabs);
-
-let data = new Vue({
+const data = new Vue({
     data() {
         return {
             config: {},
@@ -109,6 +105,16 @@ export default {
         this.kiwi = new KiwiController();
         // Just for debugging
         window.app = this;
+
+        if (!window.kiwiuser.api_endpoint) {
+            const url = `${window.kiwiuser.kiwi_instance}static/config.json`;
+            fetch(url)
+                .then((r) => r.json())
+                .then((json) => {
+                    json.kiwiServer = '/webirc/kiwiirc/';
+                    this.localData.originalConfig = json;
+                });
+        }
     },
     methods: {
         tabChanged(tab) {
@@ -116,7 +122,12 @@ export default {
         },
         setConfig(opts) {
             if (opts && opts.reload) {
+                const prevFocus = document.activeElement;
                 this.kiwi.reloadKiwiUi();
+                Vue.nextTick(() => {
+                    // newer kiwi likes to steal focus on load
+                    prevFocus.focus();
+                });
             } else {
                 // Just in case any of the change settings effect message, uncache all existing ones
                 this.kiwi.uncacheMessages();
@@ -131,18 +142,18 @@ export default {
         async save() {
             let url = '/save';
             if (this.settingsId) {
-                url += '?' + this.settingsId;
+                url += `?${this.settingsId}`;
             }
 
             // Just get the aprts of the confif we're interested in
-            let config = extractStructure(this.localData.config, this.localData.savableConfig);
-            let postData = { config: JSON.stringify(config) };
+            const config = extractStructure(this.localData.config, this.localData.savableConfig);
+            const postData = { config: JSON.stringify(config) };
 
             this.localData.saving = true;
-            let res = await Api.instance().call(url).post(postData).json();
+            const res = await Api.instance().call(url).post(postData).json();
             this.settingsId = res.settings_id;
             this.createSnippets(this.settingsId);
-            let instanceURL = new URL(this.kiwiInstanceURL);
+            const instanceURL = new URL(this.kiwiInstanceURL);
             instanceURL.searchParams.set('settings', this.settingsId);
             this.customInstanceUrl = instanceURL.toString();
             this.localData.saving = false;
@@ -154,9 +165,9 @@ export default {
             }
 
             // iframe loaded but its possible kiwi hasnt loaded in it yet
-            let c = () => {
-                let win = this.$refs.previewFrame.contentWindow;
-                if (!win || !win.kiwi || !win.kiwi.state.settings) {
+            const c = () => {
+                const win = this.$refs.previewFrame.contentWindow;
+                if (!win || !win.kiwi || !win.kiwi.state || !win.kiwi.state.settings) {
                     setTimeout(c, 20);
                     return;
                 }

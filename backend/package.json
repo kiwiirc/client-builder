@@ -1,0 +1,12 @@
+{
+  "name": "client-builder-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "Unknown",
+  "private": true,
+  "dependencies": {
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-router": "^9.4.0"
+  }
+}

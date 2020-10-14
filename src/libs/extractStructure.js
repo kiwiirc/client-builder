@@ -7,7 +7,7 @@ export default function extractStructure(source, whitelist, ret) {
 
         let v = whitelist[key];
         let sourceV = source[key];
-        //if (v === true && typeof sourceV !== 'object') {
+        // if (v === true && typeof sourceV !== 'object') {
         if (v === true) {
             ret[key] = sourceV;
         } else if (typeof v === 'object' && typeof sourceV === 'object') {
@@ -17,4 +17,4 @@ export default function extractStructure(source, whitelist, ret) {
     });
 
     return ret;
-};
+}

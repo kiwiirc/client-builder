@@ -25,13 +25,13 @@
             <div class="input-column">
                 <h3>&nbsp;</h3>
                 <label for="welcome-info">Extra information</label>
-                <input
+                <textarea
                     id="welcome-info"
                     v-model="startupInfoContent"
                     type="text"
                     @change="update"
                     @keyup="update"
-                >
+                />
             </div>
 
             <div class="input-column">
@@ -106,7 +106,26 @@ function startupOption(key, defaultVal) {
         },
         set(newVal) {
             let startupOptions = this.localData.config.startupOptions;
+            if (key === 'infoContent') {
+                console.log('infoContent', newVal);
+                newVal = newVal.replace(/\r?\n/g, '<br />');
+            }
             this.$set(startupOptions, key, newVal);
+        },
+    };
+}
+
+function infoContent(defaultVal) {
+    return {
+        get() {
+            let startupOptions = this.localData.config.startupOptions;
+            return startupOptions.infoContent === undefined ?
+                defaultVal :
+                startupOptions.infoContent.replace(/<br\s?\/?>/g, '\n');
+        },
+        set(newVal) {
+            let startupOptions = this.localData.config.startupOptions;
+            this.$set(startupOptions, 'infoContent', newVal.replace(/\r?\n/g, '<br />'));
         },
     };
 }
@@ -117,7 +136,7 @@ export default {
     computed: {
         startupGreetingText: startupOption('greetingText', ''),
         startupButtonText: startupOption('buttonText', ''),
-        startupInfoContent: startupOption('infoContent', ''),
+        startupInfoContent: infoContent(''),
         startupShowChannel: startupOption('showChannel', true),
         startupShowNick: startupOption('showNick', true),
         startupShowPassword: startupOption('showPassword', true),
