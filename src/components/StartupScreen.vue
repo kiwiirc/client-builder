@@ -29,6 +29,7 @@
                     id="welcome-info"
                     v-model="startupInfoContent"
                     type="text"
+                    class="extra-info"
                     @change="update"
                     @keyup="update"
                 />

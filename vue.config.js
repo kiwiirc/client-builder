@@ -6,6 +6,13 @@ module.exports = {
     publicPath: '',
     assetsDir: 'static/',
     runtimeCompiler: true,
+    pluginOptions: {
+        lintStyleOnBuild: true,
+        stylelint: {
+            fix: false,
+            files: '{src,static}/**/*.{vue,htm,html,css,sss,less,scss}',
+        },
+    },
     configureWebpack: {
         plugins: [
             new CopyWebpackPlugin({

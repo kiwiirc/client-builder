@@ -1,13 +1,15 @@
 {
     "name": "client-builder",
     "version": "1.0.0",
-    "author": "Scott McGann",
     "private": true,
+    "author": "Scott McGann",
     "scripts": {
-        "dev": "vue-cli-service serve:prerequisites",
         "build": "vue-cli-service build",
         "test:unit": "vue-cli-service test:unit",
-        "lint": "vue-cli-service lint --no-fix"
+        "dev": "vue-cli-service serve:prerequisites",
+        "lint": "npm-run-all lint:*",
+        "lint:eslint": "vue-cli-service lint --no-fix",
+        "lint:style": "vue-cli-service lint:style"
     },
     "dependencies": {
         "core-js": "^3.6.5",
@@ -15,6 +17,7 @@
         "vue": "^2.6.11"
     },
     "devDependencies": {
+        "@samhammer/vue-cli-plugin-stylelint": "^2.0.1",
         "@vue/cli-plugin-babel": "~4.5.0",
         "@vue/cli-plugin-eslint": "~4.5.0",
         "@vue/cli-plugin-unit-jest": "~4.5.0",
@@ -28,10 +31,15 @@
         "eslint-plugin-vue": "^6.2.2",
         "less": "^3.0.4",
         "less-loader": "^5.0.0",
+        "npm-run-all": "^4.1.5",
+        "stylelint": "^13.0.0",
+        "stylelint-config-standard": "^20.0.0",
         "unzipper": "^0.10.11",
         "vue-template-compiler": "^2.6.11"
     },
     "vuePlugins": {
-        "service": ["build/prerequisites.js"]
+        "service": [
+            "build/prerequisites.js"
+        ]
     }
 }

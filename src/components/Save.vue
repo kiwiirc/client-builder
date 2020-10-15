@@ -7,14 +7,16 @@
             <span v-else>Saving...</span>
         </p>
 
-        <p v-else>
-            <button @click="copy('jsonConfig')">📋 Copy</button>
+        <div v-else>
+            <p>
+                <button @click="copy('jsonConfig')">📋 Copy</button>
+            </p>
             <textarea
                 id="jsonConfig"
                 v-model="jsonConfig"
                 class="json-config"
             />
-        </p>
+        </div>
 
         <div v-if="settingsId && !localData.saving" class="snippets">
             <hr>
@@ -91,9 +93,11 @@ export default {
 .snippets {
     margin-top: 21px;
 }
+
 .snippets > button {
     margin-top: 5px;
 }
+
 .snippet {
     width: 50%;
     margin: 0;
@@ -103,8 +107,11 @@ export default {
     line-height: normal;
     background-color: #dedede;
 }
+
 .json-config {
-    width: 50%;
-    height: 300px;
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100vh - 340px);
+    resize: none;
 }
 </style>

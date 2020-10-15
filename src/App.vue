@@ -94,11 +94,7 @@ export default {
     },
     watch: {
         tabName(val) {
-            if (val === 'Startup Screen' || val === 'IRC Network') {
-                this.kiwi.showStartup(true);
-            } else {
-                this.kiwi.showStartup(false);
-            }
+            this.changeView(val);
         },
     },
     created() {
@@ -114,6 +110,15 @@ export default {
                     json.kiwiServer = '/webirc/kiwiirc/';
                     this.localData.originalConfig = json;
                 });
+        }
+    },
+    mounted() {
+        if (this.$el.parentElement === document.body) {
+            // We are not running on kiwiirc.com
+            // change some styles to fit in
+            this.$el.style.width = '1200px';
+            this.$el.style.margin = '0 auto';
+            document.body.style.paddingTop = '0';
         }
     },
     methods: {
@@ -159,11 +164,6 @@ export default {
             this.localData.saving = false;
         },
         previewLoaded() {
-            // only do this once
-            if (this.previewReady) {
-                return;
-            }
-
             // iframe loaded but its possible kiwi hasnt loaded in it yet
             const c = () => {
                 const win = this.$refs.previewFrame.contentWindow;
@@ -178,10 +178,19 @@ export default {
 
                 setTimeout(() => {
                     this.kiwi.fakeConnect();
+                    this.changeView(this.tabName);
                 }, 200);
             };
 
             c();
+        },
+        changeView(tabName) {
+            const startupTabs = ['Startup Screen', 'IRC Network', 'Save'];
+            if (startupTabs.includes(tabName)) {
+                this.kiwi.showStartup(true);
+            } else {
+                this.kiwi.showStartup(false);
+            }
         },
     },
 };
@@ -190,17 +199,25 @@ export default {
 
 <style>
     .hidden {
-        display:none;
+        display: none;
     }
+
     ul.tabs {
         margin-bottom: 0;
     }
+
     .tabs li:last-child {
         margin-left: 2em;
     }
+
     ul.tabs a {
         cursor: pointer;
     }
+
+    ul.tabs li:last-child a {
+        border-width: 1px 1px 0 1px;
+    }
+
     .u-tabbed-content {
         padding-top: 1em;
         border-bottom: 3px solid #eaeaea;
