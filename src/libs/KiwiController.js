@@ -2,7 +2,9 @@ import KiwiMockTransport from './KiwiMockTransport';
 
 export default class KiwiController {
     constructor(kiwiWindow) {
-        kiwiWindow && this.setKiwiWindow(kiwiWindow);
+        if (kiwiWindow) {
+            this.setKiwiWindow(kiwiWindow);
+        }
     }
 
     setKiwiWindow(kiwiWindow) {
@@ -12,7 +14,7 @@ export default class KiwiController {
     }
 
     reloadKiwiUi() {
-        if(!this.kiwi) return;
+        if (!this.kiwi) return;
 
         let kiwiApp = this.window.document.querySelector('.kiwi-wrap').__vue__;
         kiwiApp.$destroy();
@@ -27,7 +29,7 @@ export default class KiwiController {
     }
 
     fakeConnect() {
-        if(!this.kiwi) return;
+        if (!this.kiwi) return;
 
         let state = this.kiwi.state;
 
@@ -68,12 +70,17 @@ export default class KiwiController {
         // Remove the cached .html of messages so they get regenerated on render
         this.kiwi.state.getActiveBuffer()
             .messagesObj
-            .messages.forEach((m) => { m.html = null; });
+            .messages.forEach((m) => {
+                m.html = '';
+                m.hasRendered = false;
+            });
     }
 
     showStartup(startup) {
-        if(!this.kiwi) return;
-
-        this.window.document.querySelector('.kiwi-wrap').__vue__.hasStarted = !startup;
+        if (!this.kiwi) return;
+        const kiwiWrap = this.window.document.querySelector('.kiwi-wrap');
+        if (kiwiWrap) {
+            kiwiWrap.__vue__.hasStarted = !startup;
+        }
     }
 }

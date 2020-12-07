@@ -36,19 +36,19 @@
                 >
             </div>
             <div class="checkbox-container">
-                <label for="extra-formatting">Basic markdown</label>
+                <label for="colourPicker">Show colour picker</label>
                 <input
-                    id="extra-formatting"
-                    v-model="localData.config.buffers.extra_formatting"
+                    id="colourPicker"
+                    v-model="localData.config.showColorPicker"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >
             </div>
             <div class="checkbox-container">
-                <label for="private-messages">Block private messages</label>
+                <label for="extra-formatting">Basic markdown</label>
                 <input
-                    id="private-messages"
-                    v-model="localData.config.buffers.block_pms"
+                    id="extra-formatting"
+                    v-model="localData.config.buffers.extra_formatting"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >
@@ -70,6 +70,27 @@
                 <input
                     id="buffers--show_timestamps"
                     v-model="localData.config.buffers.show_timestamps"
+                    type="checkbox"
+                    @change="update" @keyup="update"
+                >
+            </div>
+            <div class="checkbox-container">
+                <label for="buffers--inline_link_auto_previews">Show embedded content</label>
+                <input
+                    id="buffers--inline_link_auto_previews"
+                    v-model="localData.config.buffers.inline_link_auto_previews"
+                    type="checkbox"
+                    @change="update" @keyup="update"
+                >
+            </div>
+        </div>
+        <div class="input-column">
+            <h3>&nbsp;</h3>
+            <div class="checkbox-container">
+                <label for="private-messages">Block private messages</label>
+                <input
+                    id="private-messages"
+                    v-model="localData.config.buffers.block_pms"
                     type="checkbox"
                     @change="update" @keyup="update"
                 >

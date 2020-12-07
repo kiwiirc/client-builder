@@ -44,12 +44,10 @@
 
 <script>
 import Api from '@/libs/Api';
-// import VueTabs from 'vue-natabbed-tabs';
-// import 'vue-natabbed-tabs/themes/vue-tabs.css';
-import TabbedView from './components/tabs';
 import Vue from 'vue';
 import KiwiController from './libs/KiwiController';
 import extractStructure from './libs/extractStructure';
+import TabbedView from './components/Tabs.vue';
 import Theme from './components/Theme.vue';
 import NetworkSettings from './components/NetworkSettings.vue';
 import StartupScreen from './components/StartupScreen.vue';
@@ -57,9 +55,7 @@ import MessageView from './components/MessageView.vue';
 import Plugins from './components/Plugins.vue';
 import Save from './components/Save.vue';
 
-// Vue.use(VueTabs);
-
-let data = new Vue({
+const data = new Vue({
     data() {
         return {
             config: {},
@@ -98,17 +94,32 @@ export default {
     },
     watch: {
         tabName(val) {
-            if (val === 'Startup Screen' || val === 'IRC Network') {
-                this.kiwi.showStartup(true);
-            } else {
-                this.kiwi.showStartup(false);
-            }
+            this.changeView(val);
         },
     },
     created() {
         this.kiwi = new KiwiController();
         // Just for debugging
         window.app = this;
+
+        if (!window.kiwiuser.api_endpoint) {
+            const url = `${window.kiwiuser.kiwi_instance}static/config.json`;
+            fetch(url)
+                .then((r) => r.json())
+                .then((json) => {
+                    json.kiwiServer = '/webirc/kiwiirc/';
+                    this.localData.originalConfig = json;
+                });
+        }
+    },
+    mounted() {
+        if (this.$el.parentElement === document.body) {
+            // We are not running on kiwiirc.com
+            // change some styles to fit in
+            this.$el.style.width = '1200px';
+            this.$el.style.margin = '0 auto';
+            document.body.style.paddingTop = '0';
+        }
     },
     methods: {
         tabChanged(tab) {
@@ -116,7 +127,12 @@ export default {
         },
         setConfig(opts) {
             if (opts && opts.reload) {
+                const prevFocus = document.activeElement;
                 this.kiwi.reloadKiwiUi();
+                Vue.nextTick(() => {
+                    // newer kiwi likes to steal focus on load
+                    prevFocus.focus();
+                });
             } else {
                 // Just in case any of the change settings effect message, uncache all existing ones
                 this.kiwi.uncacheMessages();
@@ -131,32 +147,27 @@ export default {
         async save() {
             let url = '/save';
             if (this.settingsId) {
-                url += '?' + this.settingsId;
+                url += `?${this.settingsId}`;
             }
 
             // Just get the aprts of the confif we're interested in
-            let config = extractStructure(this.localData.config, this.localData.savableConfig);
-            let postData = { config: JSON.stringify(config) };
+            const config = extractStructure(this.localData.config, this.localData.savableConfig);
+            const postData = { config: JSON.stringify(config) };
 
             this.localData.saving = true;
-            let res = await Api.instance().call(url).post(postData).json();
+            const res = await Api.instance().call(url).post(postData).json();
             this.settingsId = res.settings_id;
             this.createSnippets(this.settingsId);
-            let instanceURL = new URL(this.kiwiInstanceURL);
+            const instanceURL = new URL(this.kiwiInstanceURL);
             instanceURL.searchParams.set('settings', this.settingsId);
             this.customInstanceUrl = instanceURL.toString();
             this.localData.saving = false;
         },
         previewLoaded() {
-            // only do this once
-            if (this.previewReady) {
-                return;
-            }
-
             // iframe loaded but its possible kiwi hasnt loaded in it yet
-            let c = () => {
-                let win = this.$refs.previewFrame.contentWindow;
-                if (!win || !win.kiwi || !win.kiwi.state.settings) {
+            const c = () => {
+                const win = this.$refs.previewFrame.contentWindow;
+                if (!win || !win.kiwi || !win.kiwi.state || !win.kiwi.state.settings) {
                     setTimeout(c, 20);
                     return;
                 }
@@ -167,10 +178,19 @@ export default {
 
                 setTimeout(() => {
                     this.kiwi.fakeConnect();
+                    this.changeView(this.tabName);
                 }, 200);
             };
 
             c();
+        },
+        changeView(tabName) {
+            const startupTabs = ['Startup Screen', 'IRC Network', 'Save'];
+            if (startupTabs.includes(tabName)) {
+                this.kiwi.showStartup(true);
+            } else {
+                this.kiwi.showStartup(false);
+            }
         },
     },
 };
@@ -179,17 +199,25 @@ export default {
 
 <style>
     .hidden {
-        display:none;
+        display: none;
     }
+
     ul.tabs {
         margin-bottom: 0;
     }
+
     .tabs li:last-child {
         margin-left: 2em;
     }
+
     ul.tabs a {
         cursor: pointer;
     }
+
+    ul.tabs li:last-child a {
+        border-width: 1px 1px 0 1px;
+    }
+
     .u-tabbed-content {
         padding-top: 1em;
         border-bottom: 3px solid #eaeaea;

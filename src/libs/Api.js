@@ -1,3 +1,5 @@
+import ApiContext from './ApiContext';
+
 let existingInstance = null;
 
 export default class Api {
@@ -14,9 +16,7 @@ export default class Api {
     }
 
     fetch(path, _headers, _method, _data) {
-        let headers = Object.assign({
-            'x-auth-token': this.token,
-        }, headers);
+        let headers = { 'x-auth-token': this.token, ..._headers };
 
         let url = this.endpoint;
         if (path[0] !== '/') {
@@ -24,12 +24,13 @@ export default class Api {
         }
         url += path;
 
-        let body = undefined;
+        let body;
         if (_method === 'post' && _data) {
             body = new FormData();
-            for (let prop in _data) {
-                body.append(prop, _data[prop]);
-            }
+            // this was for ... in
+            Object.keys(_data).forEach((key) => {
+                body.append(key, _data[key]);
+            });
         }
 
         return fetch(url, {
@@ -47,56 +48,5 @@ export default class Api {
         }
 
         return ctx;
-    }
-}
-
-class ApiContext {
-    constructor(rootApi) {
-        this._api = rootApi;
-        this._method = 'get';
-        this._headers = {};
-        this._url = '';
-        this._data = {};
-    }
-
-    json() {
-        return this._api.fetch(this._url, this._headers, this._method, this._data).then(response => response.json());
-    }
-
-    fetch() {
-        return this._api.fetch(this._url, this._headers, this._method, this._data);
-    }
-
-    url(url) {
-        this._url = url;
-        return this;
-    }
-
-    method(method) {
-        this._method = method;
-        return this;
-    }
-
-    post(data) {
-        this._method = 'post';
-        if (data) {
-            this._data = data;
-        }
-        return this;
-    }
-
-    headers(headers) {
-        this._headers = headers;
-        return this;
-    }
-
-    header(header, val) {
-        this._headers[header] = val;
-        return this;
-    }
-
-    data(data) {
-        this._data = data;
-        return this;
     }
 }

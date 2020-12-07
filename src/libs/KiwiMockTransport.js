@@ -1,11 +1,11 @@
-'use strict';
-
 /**
  * Fake transport
  */
 
 const EventEmitter = require('eventemitter3');
 
+/*  eslint-disable no-unused-vars */
+/*  eslint-disable class-methods-use-this */
 export default class Connection extends EventEmitter {
     constructor(options) {
         super();
@@ -57,4 +57,4 @@ export default class Connection extends EventEmitter {
 
     setEncoding(encoding) {
     }
-};
+}
