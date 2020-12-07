@@ -75,7 +75,7 @@
                 >
             </div>
             <div class="checkbox-container">
-                <label for="buffers--inline_link_auto_previews">Show embedded content</label>
+                <label for="buffers--inline_link_auto_previews">Auto link previews</label>
                 <input
                     id="buffers--inline_link_auto_previews"
                     v-model="localData.config.buffers.inline_link_auto_previews"
