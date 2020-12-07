@@ -70,6 +70,16 @@
                     >
                 </div>
             </div>
+            <div class="input-column">
+                <label for="welcome-background">Background URL</label>
+                <input
+                    id="welcome-background"
+                    v-model="startupBackground"
+                    type="text"
+                    @change="update"
+                    @keyup="update"
+                >
+            </div>
         </div>
     <!--
     <div v-for="field in ZNCfields" :key="field">
@@ -119,6 +129,23 @@ function infoContent(defaultVal) {
     };
 }
 
+function infoBackground(defaultVal) {
+    return {
+        get() {
+            const baseBackgroundUrl = this.localData.baseBackgroundUrl;
+            const startupOptions = this.localData.config.startupOptions;
+            return startupOptions.infoBackground === undefined ?
+                defaultVal :
+                startupOptions.infoBackground.replace(baseBackgroundUrl, '');
+        },
+        set(newVal) {
+            const baseBackgroundUrl = this.localData.baseBackgroundUrl;
+            const startupOptions = this.localData.config.startupOptions;
+            this.$set(startupOptions, 'infoBackground', baseBackgroundUrl + newVal);
+        },
+    };
+}
+
 export default {
     name: 'StartupScreen',
     props: ['localData'],
@@ -129,6 +156,7 @@ export default {
         startupShowChannel: startupOption('showChannel', true),
         startupShowNick: startupOption('showNick', true),
         startupShowPassword: startupOption('showPassword', true),
+        startupBackground: infoBackground(''),
     },
     methods: {
         update() {
