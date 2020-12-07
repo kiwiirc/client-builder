@@ -69,17 +69,6 @@
                         @keyup="update"
                     >
                 </div>
-
-                <div class="checkbox-container">
-                    <label for="welcome-recaptcha">Use recaptcha</label>
-                    <input
-                        id="welcome-recaptcha"
-                        v-model="startupRecaptcha"
-                        type="checkbox"
-                        @change="update"
-                        @keyup="update"
-                    >
-                </div>
             </div>
         </div>
     <!--
@@ -108,7 +97,6 @@ function startupOption(key, defaultVal) {
         set(newVal) {
             let startupOptions = this.localData.config.startupOptions;
             if (key === 'infoContent') {
-                console.log('infoContent', newVal);
                 newVal = newVal.replace(/\r?\n/g, '<br />');
             }
             this.$set(startupOptions, key, newVal);
@@ -141,7 +129,6 @@ export default {
         startupShowChannel: startupOption('showChannel', true),
         startupShowNick: startupOption('showNick', true),
         startupShowPassword: startupOption('showPassword', true),
-        startupRecaptcha: startupOption('recaptcha', false),
     },
     methods: {
         update() {
