@@ -70,6 +70,16 @@
                     >
                 </div>
             </div>
+            <div class="input-column">
+                <label for="welcome-background">Background URL</label>
+                <input
+                    id="welcome-background"
+                    v-model="backgroundUrl"
+                    type="text"
+                    :style="{'border-color': isValidBackground ? '' : '#f00'}"
+                    @blur="updateBackground"
+                >
+            </div>
         </div>
     <!--
     <div v-for="field in ZNCfields" :key="field">
@@ -122,6 +132,12 @@ function infoContent(defaultVal) {
 export default {
     name: 'StartupScreen',
     props: ['localData'],
+    data() {
+        return {
+            backgroundUrl: '',
+            urlRegex: null,
+        };
+    },
     computed: {
         startupGreetingText: startupOption('greetingText', ''),
         startupButtonText: startupOption('buttonText', ''),
@@ -129,10 +145,39 @@ export default {
         startupShowChannel: startupOption('showChannel', true),
         startupShowNick: startupOption('showNick', true),
         startupShowPassword: startupOption('showPassword', true),
+        isValidBackground() {
+            if (!this.backgroundUrl) {
+                return true;
+            }
+            return this.isValidUrl(this.backgroundUrl);
+        },
     },
     methods: {
         update() {
             this.$emit('setConfig', { reload: true });
+        },
+        updateBackground() {
+            if (this.backgroundUrl && !this.isValidUrl(this.backgroundUrl)) {
+                // only return if the url is not empty and invalid
+                return;
+            }
+            const baseBackgroundUrl = this.localData.baseBackgroundUrl;
+            const startupOptions = this.localData.config.startupOptions;
+            const newUrl = this.backgroundUrl ? baseBackgroundUrl + this.backgroundUrl : '';
+            this.$set(startupOptions, 'infoBackground', newUrl);
+            this.update();
+        },
+        isValidUrl(url) {
+            if (!this.urlRegex) {
+                // regex from https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
+                this.urlRegex = new RegExp('^(https?:\\/\\/)?' + // protocol
+                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+                    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+                    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+            }
+            return this.urlRegex.test(url);
         },
     },
 };

@@ -66,6 +66,7 @@ const data = new Vue({
             iframeSnippet: '',
             saving: false,
             networkType: 'default',
+            baseBackgroundUrl: 'http://127.0.0.1:8088/image-cache/x1000/',
         };
     },
 });
